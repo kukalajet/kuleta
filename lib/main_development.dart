@@ -60,5 +60,5 @@ void main() async {
   // print(invoiceFromService3);
   // print(invoiceFromService4);
 
-  await bootstrap(() => const App());
+  await bootstrap(() => App(invoiceRepository: invoiceRepository));
 }

@@ -9,14 +9,18 @@ environment:
 
 dependencies:
   bloc: ^8.1.0
+  flex_color_scheme: ^6.0.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
   flutter_localizations:
     sdk: flutter
+  go_router: ^5.1.5
+  google_fonts: ^3.0.1
   intl: ^0.17.0
   invoice_repository:
     path: packages/invoice_repository
+  provider: ^6.0.4
 
 dev_dependencies:
   bloc_test: ^9.1.0
