@@ -20,7 +20,6 @@ class Invoice extends Equatable {
     this.dateTimeCreated,
     this.iic,
     this.tin,
-    this.seller,
     this.paymentMethod = const <PaymentMethod>[],
     this.items = const <Item>[],
     this.sameTaxes = const <Tax>[],
@@ -35,10 +34,11 @@ class Invoice extends Equatable {
   final DateTime? dateTimeCreated;
   final String? iic;
   final String? tin;
-  final Seller? seller;
   final List<PaymentMethod> paymentMethod;
   final List<Item> items;
   final List<Tax> sameTaxes;
+
+  final seller = IsarLink<Seller>();
 
   factory Invoice.fromJson(
     Map<String, dynamic> json,
@@ -68,6 +68,7 @@ class Invoice extends Equatable {
     final sellerId = int.parse(tin.substring(1, tin.length - 1));
     final seller = Seller.fromJsonAndId(json['seller'], sellerId);
     final dateTimeCreated = DateTime.tryParse(json['dateTimeCreated']);
+
     final invoice = Invoice(
       id: json['id'],
       totalPrice: json['totalPrice']?.toDouble(),
@@ -78,11 +79,10 @@ class Invoice extends Equatable {
       dateTimeCreated: dateTimeCreated,
       iic: iic,
       tin: tin,
-      seller: seller,
       paymentMethod: paymentMethod ?? [],
       items: items ?? [],
       sameTaxes: sameTaxes ?? [],
-    );
+    )..seller.value = seller;
 
     return invoice;
   }

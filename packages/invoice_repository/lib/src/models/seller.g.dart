@@ -3,13 +3,17 @@
 part of 'seller.dart';
 
 // **************************************************************************
-// IsarEmbeddedGenerator
+// IsarCollectionGenerator
 // **************************************************************************
 
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters
 
-const SellerSchema = Schema(
+extension GetSellerCollection on Isar {
+  IsarCollection<Seller> get sellers => this.collection();
+}
+
+const SellerSchema = CollectionSchema(
   name: r'Seller',
   id: -2035254712981593463,
   properties: {
@@ -28,33 +32,28 @@ const SellerSchema = Schema(
       name: r'hashCode',
       type: IsarType.long,
     ),
-    r'id': PropertySchema(
-      id: 3,
-      name: r'id',
-      type: IsarType.long,
-    ),
     r'idNum': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'idNum',
       type: IsarType.string,
     ),
     r'idType': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'idType',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'name',
       type: IsarType.string,
     ),
     r'stringify': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'stringify',
       type: IsarType.bool,
     ),
     r'town': PropertySchema(
-      id: 8,
+      id: 7,
       name: r'town',
       type: IsarType.string,
     )
@@ -63,6 +62,14 @@ const SellerSchema = Schema(
   serialize: _sellerSerialize,
   deserialize: _sellerDeserialize,
   deserializeProp: _sellerDeserializeProp,
+  idName: r'id',
+  indexes: {},
+  links: {},
+  embeddedSchemas: {},
+  getId: _sellerGetId,
+  getLinks: _sellerGetLinks,
+  attach: _sellerAttach,
+  version: '3.0.2',
 );
 
 int _sellerEstimateSize(
@@ -119,12 +126,11 @@ void _sellerSerialize(
   writer.writeString(offsets[0], object.address);
   writer.writeString(offsets[1], object.country);
   writer.writeLong(offsets[2], object.hashCode);
-  writer.writeLong(offsets[3], object.id);
-  writer.writeString(offsets[4], object.idNum);
-  writer.writeString(offsets[5], object.idType);
-  writer.writeString(offsets[6], object.name);
-  writer.writeBool(offsets[7], object.stringify);
-  writer.writeString(offsets[8], object.town);
+  writer.writeString(offsets[3], object.idNum);
+  writer.writeString(offsets[4], object.idType);
+  writer.writeString(offsets[5], object.name);
+  writer.writeBool(offsets[6], object.stringify);
+  writer.writeString(offsets[7], object.town);
 }
 
 Seller _sellerDeserialize(
@@ -136,11 +142,11 @@ Seller _sellerDeserialize(
   final object = Seller(
     address: reader.readStringOrNull(offsets[0]),
     country: reader.readStringOrNull(offsets[1]),
-    id: reader.readLongOrNull(offsets[3]),
-    idNum: reader.readStringOrNull(offsets[4]),
-    idType: reader.readStringOrNull(offsets[5]),
-    name: reader.readStringOrNull(offsets[6]),
-    town: reader.readStringOrNull(offsets[8]),
+    id: id,
+    idNum: reader.readStringOrNull(offsets[3]),
+    idType: reader.readStringOrNull(offsets[4]),
+    name: reader.readStringOrNull(offsets[5]),
+    town: reader.readStringOrNull(offsets[7]),
   );
   return object;
 }
@@ -159,19 +165,102 @@ P _sellerDeserializeProp<P>(
     case 2:
       return (reader.readLong(offset)) as P;
     case 3:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readStringOrNull(offset)) as P;
-    case 7:
       return (reader.readBoolOrNull(offset)) as P;
-    case 8:
+    case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
+  }
+}
+
+Id _sellerGetId(Seller object) {
+  return object.id;
+}
+
+List<IsarLinkBase<dynamic>> _sellerGetLinks(Seller object) {
+  return [];
+}
+
+void _sellerAttach(IsarCollection<dynamic> col, Id id, Seller object) {}
+
+extension SellerQueryWhereSort on QueryBuilder<Seller, Seller, QWhere> {
+  QueryBuilder<Seller, Seller, QAfterWhere> anyId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(const IdWhereClause.any());
+    });
+  }
+}
+
+extension SellerQueryWhere on QueryBuilder<Seller, Seller, QWhereClause> {
+  QueryBuilder<Seller, Seller, QAfterWhereClause> idEqualTo(Id id) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IdWhereClause.between(
+        lower: id,
+        upper: id,
+      ));
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterWhereClause> idNotEqualTo(Id id) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IdWhereClause.lessThan(upper: id, includeUpper: false),
+            )
+            .addWhereClause(
+              IdWhereClause.greaterThan(lower: id, includeLower: false),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IdWhereClause.greaterThan(lower: id, includeLower: false),
+            )
+            .addWhereClause(
+              IdWhereClause.lessThan(upper: id, includeUpper: false),
+            );
+      }
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterWhereClause> idGreaterThan(Id id,
+      {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IdWhereClause.greaterThan(lower: id, includeLower: include),
+      );
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterWhereClause> idLessThan(Id id,
+      {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IdWhereClause.lessThan(upper: id, includeUpper: include),
+      );
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterWhereClause> idBetween(
+    Id lowerId,
+    Id upperId, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IdWhereClause.between(
+        lower: lowerId,
+        includeLower: includeLower,
+        upper: upperId,
+        includeUpper: includeUpper,
+      ));
+    });
   }
 }
 
@@ -521,23 +610,7 @@ extension SellerQueryFilter on QueryBuilder<Seller, Seller, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Seller, Seller, QAfterFilterCondition> idIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'id',
-      ));
-    });
-  }
-
-  QueryBuilder<Seller, Seller, QAfterFilterCondition> idIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'id',
-      ));
-    });
-  }
-
-  QueryBuilder<Seller, Seller, QAfterFilterCondition> idEqualTo(int? value) {
+  QueryBuilder<Seller, Seller, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -547,7 +620,7 @@ extension SellerQueryFilter on QueryBuilder<Seller, Seller, QFilterCondition> {
   }
 
   QueryBuilder<Seller, Seller, QAfterFilterCondition> idGreaterThan(
-    int? value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -560,7 +633,7 @@ extension SellerQueryFilter on QueryBuilder<Seller, Seller, QFilterCondition> {
   }
 
   QueryBuilder<Seller, Seller, QAfterFilterCondition> idLessThan(
-    int? value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -573,8 +646,8 @@ extension SellerQueryFilter on QueryBuilder<Seller, Seller, QFilterCondition> {
   }
 
   QueryBuilder<Seller, Seller, QAfterFilterCondition> idBetween(
-    int? lower,
-    int? upper, {
+    Id lower,
+    Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -1199,3 +1272,325 @@ extension SellerQueryFilter on QueryBuilder<Seller, Seller, QFilterCondition> {
 }
 
 extension SellerQueryObject on QueryBuilder<Seller, Seller, QFilterCondition> {}
+
+extension SellerQueryLinks on QueryBuilder<Seller, Seller, QFilterCondition> {}
+
+extension SellerQuerySortBy on QueryBuilder<Seller, Seller, QSortBy> {
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByCountry() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'country', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByCountryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'country', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByIdNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idNum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByIdNumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idNum', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByIdType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByIdTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idType', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByStringify() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stringify', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByStringifyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stringify', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByTown() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'town', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> sortByTownDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'town', Sort.desc);
+    });
+  }
+}
+
+extension SellerQuerySortThenBy on QueryBuilder<Seller, Seller, QSortThenBy> {
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByCountry() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'country', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByCountryDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'country', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenById() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByIdNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idNum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByIdNumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idNum', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByIdType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByIdTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'idType', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByName() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByNameDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByStringify() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stringify', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByStringifyDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'stringify', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByTown() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'town', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QAfterSortBy> thenByTownDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'town', Sort.desc);
+    });
+  }
+}
+
+extension SellerQueryWhereDistinct on QueryBuilder<Seller, Seller, QDistinct> {
+  QueryBuilder<Seller, Seller, QDistinct> distinctByAddress(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'address', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QDistinct> distinctByCountry(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'country', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QDistinct> distinctByIdNum(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idNum', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QDistinct> distinctByIdType(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'idType', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QDistinct> distinctByName(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QDistinct> distinctByStringify() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'stringify');
+    });
+  }
+
+  QueryBuilder<Seller, Seller, QDistinct> distinctByTown(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'town', caseSensitive: caseSensitive);
+    });
+  }
+}
+
+extension SellerQueryProperty on QueryBuilder<Seller, Seller, QQueryProperty> {
+  QueryBuilder<Seller, int, QQueryOperations> idProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<Seller, String?, QQueryOperations> addressProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'address');
+    });
+  }
+
+  QueryBuilder<Seller, String?, QQueryOperations> countryProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'country');
+    });
+  }
+
+  QueryBuilder<Seller, int, QQueryOperations> hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
+    });
+  }
+
+  QueryBuilder<Seller, String?, QQueryOperations> idNumProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idNum');
+    });
+  }
+
+  QueryBuilder<Seller, String?, QQueryOperations> idTypeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'idType');
+    });
+  }
+
+  QueryBuilder<Seller, String?, QQueryOperations> nameProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Seller, bool?, QQueryOperations> stringifyProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'stringify');
+    });
+  }
+
+  QueryBuilder<Seller, String?, QQueryOperations> townProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'town');
+    });
+  }
+}

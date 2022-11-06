@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:isar/isar.dart';
-import 'package:invoice_repository/src/models/invoice.dart';
 import 'package:path_provider/path_provider.dart';
 
 const _baseUrl = 'https://efiskalizimi-app.tatime.gov.al';
@@ -19,7 +18,7 @@ class InvoiceRepository {
   Future<void> init() async {
     final dir = await getApplicationSupportDirectory();
     isar = await Isar.open(
-      [InvoiceSchema],
+      [InvoiceSchema, SellerSchema],
       directory: dir.path,
       inspector: true,
     );
@@ -42,6 +41,8 @@ class InvoiceRepository {
   Future<void> storeInvoice(Invoice invoice) async {
     return isar.writeTxn(() async {
       await isar.invoices.put(invoice);
+      await isar.sellers.put(invoice.seller.value!);
+      await invoice.seller.save();
     });
   }
 }

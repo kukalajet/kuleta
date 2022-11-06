@@ -60,34 +60,28 @@ const InvoiceSchema = CollectionSchema(
       type: IsarType.objectList,
       target: r'Tax',
     ),
-    r'seller': PropertySchema(
-      id: 8,
-      name: r'seller',
-      type: IsarType.object,
-      target: r'Seller',
-    ),
     r'stringify': PropertySchema(
-      id: 9,
+      id: 8,
       name: r'stringify',
       type: IsarType.bool,
     ),
     r'tin': PropertySchema(
-      id: 10,
+      id: 9,
       name: r'tin',
       type: IsarType.string,
     ),
     r'totalPrice': PropertySchema(
-      id: 11,
+      id: 10,
       name: r'totalPrice',
       type: IsarType.double,
     ),
     r'totalPriceWithoutVAT': PropertySchema(
-      id: 12,
+      id: 11,
       name: r'totalPriceWithoutVAT',
       type: IsarType.double,
     ),
     r'totalVATAmount': PropertySchema(
-      id: 13,
+      id: 12,
       name: r'totalVATAmount',
       type: IsarType.double,
     )
@@ -98,9 +92,15 @@ const InvoiceSchema = CollectionSchema(
   deserializeProp: _invoiceDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'seller': LinkSchema(
+      id: -3098385325812937807,
+      name: r'seller',
+      target: r'Seller',
+      single: true,
+    )
+  },
   embeddedSchemas: {
-    r'Seller': SellerSchema,
     r'PaymentMethod': PaymentMethodSchema,
     r'Item': ItemSchema,
     r'Tax': TaxSchema
@@ -155,13 +155,6 @@ int _invoiceEstimateSize(
     }
   }
   {
-    final value = object.seller;
-    if (value != null) {
-      bytesCount +=
-          3 + SellerSchema.estimateSize(value, allOffsets[Seller]!, allOffsets);
-    }
-  }
-  {
     final value = object.tin;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -199,17 +192,11 @@ void _invoiceSerialize(
     TaxSchema.serialize,
     object.sameTaxes,
   );
-  writer.writeObject<Seller>(
-    offsets[8],
-    allOffsets,
-    SellerSchema.serialize,
-    object.seller,
-  );
-  writer.writeBool(offsets[9], object.stringify);
-  writer.writeString(offsets[10], object.tin);
-  writer.writeDouble(offsets[11], object.totalPrice);
-  writer.writeDouble(offsets[12], object.totalPriceWithoutVAT);
-  writer.writeDouble(offsets[13], object.totalVATAmount);
+  writer.writeBool(offsets[8], object.stringify);
+  writer.writeString(offsets[9], object.tin);
+  writer.writeDouble(offsets[10], object.totalPrice);
+  writer.writeDouble(offsets[11], object.totalPriceWithoutVAT);
+  writer.writeDouble(offsets[12], object.totalVATAmount);
 }
 
 Invoice _invoiceDeserialize(
@@ -245,15 +232,10 @@ Invoice _invoiceDeserialize(
           Tax(),
         ) ??
         const <Tax>[],
-    seller: reader.readObjectOrNull<Seller>(
-      offsets[8],
-      SellerSchema.deserialize,
-      allOffsets,
-    ),
-    tin: reader.readStringOrNull(offsets[10]),
-    totalPrice: reader.readDoubleOrNull(offsets[11]),
-    totalPriceWithoutVAT: reader.readDoubleOrNull(offsets[12]),
-    totalVATAmount: reader.readDoubleOrNull(offsets[13]),
+    tin: reader.readStringOrNull(offsets[9]),
+    totalPrice: reader.readDoubleOrNull(offsets[10]),
+    totalPriceWithoutVAT: reader.readDoubleOrNull(offsets[11]),
+    totalVATAmount: reader.readDoubleOrNull(offsets[12]),
   );
   return object;
 }
@@ -300,20 +282,14 @@ P _invoiceDeserializeProp<P>(
           ) ??
           const <Tax>[]) as P;
     case 8:
-      return (reader.readObjectOrNull<Seller>(
-        offset,
-        SellerSchema.deserialize,
-        allOffsets,
-      )) as P;
-    case 9:
       return (reader.readBoolOrNull(offset)) as P;
-    case 10:
+    case 9:
       return (reader.readStringOrNull(offset)) as P;
+    case 10:
+      return (reader.readDoubleOrNull(offset)) as P;
     case 11:
       return (reader.readDoubleOrNull(offset)) as P;
     case 12:
-      return (reader.readDoubleOrNull(offset)) as P;
-    case 13:
       return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -325,10 +301,12 @@ Id _invoiceGetId(Invoice object) {
 }
 
 List<IsarLinkBase<dynamic>> _invoiceGetLinks(Invoice object) {
-  return [];
+  return [object.seller];
 }
 
-void _invoiceAttach(IsarCollection<dynamic> col, Id id, Invoice object) {}
+void _invoiceAttach(IsarCollection<dynamic> col, Id id, Invoice object) {
+  object.seller.attach(col, col.isar.collection<Seller>(), r'seller', id);
+}
 
 extension InvoiceQueryWhereSort on QueryBuilder<Invoice, Invoice, QWhere> {
   QueryBuilder<Invoice, Invoice, QAfterWhere> anyId() {
@@ -1209,22 +1187,6 @@ extension InvoiceQueryFilter
     });
   }
 
-  QueryBuilder<Invoice, Invoice, QAfterFilterCondition> sellerIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'seller',
-      ));
-    });
-  }
-
-  QueryBuilder<Invoice, Invoice, QAfterFilterCondition> sellerIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'seller',
-      ));
-    });
-  }
-
   QueryBuilder<Invoice, Invoice, QAfterFilterCondition> stringifyIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1662,17 +1624,23 @@ extension InvoiceQueryObject
       return query.object(q, r'sameTaxes');
     });
   }
-
-  QueryBuilder<Invoice, Invoice, QAfterFilterCondition> seller(
-      FilterQuery<Seller> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'seller');
-    });
-  }
 }
 
 extension InvoiceQueryLinks
-    on QueryBuilder<Invoice, Invoice, QFilterCondition> {}
+    on QueryBuilder<Invoice, Invoice, QFilterCondition> {
+  QueryBuilder<Invoice, Invoice, QAfterFilterCondition> seller(
+      FilterQuery<Seller> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'seller');
+    });
+  }
+
+  QueryBuilder<Invoice, Invoice, QAfterFilterCondition> sellerIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'seller', 0, true, 0, true);
+    });
+  }
+}
 
 extension InvoiceQuerySortBy on QueryBuilder<Invoice, Invoice, QSortBy> {
   QueryBuilder<Invoice, Invoice, QAfterSortBy> sortByCashRegister() {
@@ -2053,12 +2021,6 @@ extension InvoiceQueryProperty
   QueryBuilder<Invoice, List<Tax>, QQueryOperations> sameTaxesProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'sameTaxes');
-    });
-  }
-
-  QueryBuilder<Invoice, Seller?, QQueryOperations> sellerProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'seller');
     });
   }
 

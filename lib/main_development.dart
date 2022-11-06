@@ -38,8 +38,11 @@ void main() async {
   // );
 
   await invoiceRepository.storeInvoice(invoiceFromService1!);
+  // await invoiceRepository.storeInvoice(invoiceFromService2!);
+  // await invoiceRepository.storeInvoice(invoiceFromService3!);
+  // await invoiceRepository.storeInvoice(invoiceFromService4!);
 
-  print(invoiceFromService1);
+  // print(invoiceFromService1);
   // print(invoiceFromService2);
   // print(invoiceFromService3);
   // print(invoiceFromService4);

@@ -3,10 +3,10 @@ import 'package:isar/isar.dart';
 
 part 'seller.g.dart';
 
-@Embedded(ignore: <String>{'props'})
+@Collection(ignore: <String>{'props'})
 class Seller extends Equatable {
   const Seller({
-    this.id,
+    this.id = Isar.autoIncrement,
     this.idType,
     this.idNum,
     this.name,
@@ -15,7 +15,7 @@ class Seller extends Equatable {
     this.country,
   });
 
-  final int? id;
+  final Id id;
   final String? idType;
   final String? idNum;
   final String? name;
@@ -23,7 +23,7 @@ class Seller extends Equatable {
   final String? town;
   final String? country;
 
-  factory Seller.fromJsonAndId(Map<String, dynamic> json, int? id) {
+  factory Seller.fromJsonAndId(Map<String, dynamic> json, int id) {
     final seller = Seller(
       id: id,
       idType: json['idType'],
