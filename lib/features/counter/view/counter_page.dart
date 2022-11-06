@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuleta/counter/counter.dart';
+import 'package:kuleta/features/counter/counter.dart';
 import 'package:kuleta/l10n/l10n.dart';
 
 class CounterPage extends StatelessWidget {

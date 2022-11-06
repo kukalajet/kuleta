@@ -6,7 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:flutter/material.dart';
-import 'package:kuleta/counter/counter.dart';
+import 'package:kuleta/features/counter/counter.dart';
 import 'package:kuleta/l10n/l10n.dart';
 
 class App extends StatelessWidget {

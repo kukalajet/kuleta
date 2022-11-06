@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:kuleta/app/app.dart';
+import 'package:kuleta/features/app/app.dart';
 import 'package:kuleta/bootstrap.dart';
 
 void main() {

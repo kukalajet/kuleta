@@ -7,8 +7,8 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:invoice_repository/invoice_repository.dart';
-import 'package:kuleta/app/app.dart';
 import 'package:kuleta/bootstrap.dart';
+import 'package:kuleta/features/app/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,11 +16,11 @@ void main() async {
   final invoiceRepository = InvoiceRepository();
   await invoiceRepository.init();
 
-  final invoiceFromService1 = await invoiceRepository.getInvoiceFromService(
-    iic: 'B2612C45EFFD711F8640739BA9ABCC94',
-    dateTimeCreated: '2022-06-05T11:15:02 02:00',
-    tin: 'K92201080V',
-  );
+  // final invoiceFromService1 = await invoiceRepository.getInvoiceFromService(
+  //   iic: 'B2612C45EFFD711F8640739BA9ABCC94',
+  //   dateTimeCreated: '2022-06-05T11:15:02 02:00',
+  //   tin: 'K92201080V',
+  // );
   // final invoiceFromService2 = await invoiceRepository.getInvoiceFromService(
   //   iic: 'E469949D81F26446F0AC5C8A75CAB288',
   //   dateTimeCreated: '2022-06-05T10:24:24 02:00',
@@ -37,10 +37,23 @@ void main() async {
   //   tin: 'L92103036T',
   // );
 
-  await invoiceRepository.storeInvoice(invoiceFromService1!);
+  // final firstConadInvoice = await invoiceRepository.getInvoiceFromService(
+  //   iic: '68A837DECBDF5FB5249631A040BA9EE3',
+  //   dateTimeCreated: '2022-11-04T15:28:39 01:00',
+  //   tin: 'K61704029H',
+  // );
+  // final secondConadInvoice = await invoiceRepository.getInvoiceFromService(
+  //   iic: 'E5CDA1CFF3AB556C0A8D9E38C368E803',
+  //   dateTimeCreated: '2022-11-03T12:34:01 01:00',
+  //   tin: 'K61704029H',
+  // );
+
+  // await invoiceRepository.storeInvoice(invoiceFromService1!);
   // await invoiceRepository.storeInvoice(invoiceFromService2!);
   // await invoiceRepository.storeInvoice(invoiceFromService3!);
   // await invoiceRepository.storeInvoice(invoiceFromService4!);
+  // await invoiceRepository.storeInvoice(firstConadInvoice!);
+  // await invoiceRepository.storeInvoice(secondConadInvoice!);
 
   // print(invoiceFromService1);
   // print(invoiceFromService2);

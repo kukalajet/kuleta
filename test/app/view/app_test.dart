@@ -6,8 +6,8 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kuleta/app/app.dart';
-import 'package:kuleta/counter/counter.dart';
+import 'package:kuleta/features/app/app.dart';
+import 'package:kuleta/features/counter/counter.dart';
 
 void main() {
   group('App', () {

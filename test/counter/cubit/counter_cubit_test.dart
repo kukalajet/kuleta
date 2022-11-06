@@ -8,7 +8,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:kuleta/counter/counter.dart';
+import 'package:kuleta/features/counter/counter.dart';
 
 void main() {
   group('CounterCubit', () {
