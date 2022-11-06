@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:isar/isar.dart';
 
+part 'item.g.dart';
+
+@Embedded(ignore: <String>{'props'})
 class Item extends Equatable {
   const Item({
     this.id,

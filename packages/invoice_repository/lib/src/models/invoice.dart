@@ -1,13 +1,17 @@
 import 'package:equatable/equatable.dart';
+import 'package:isar/isar.dart';
 
 import 'item.dart';
 import 'payment_method.dart';
 import 'seller.dart';
 import 'tax.dart';
 
+part 'invoice.g.dart';
+
+@Collection(ignore: <String>{'props'})
 class Invoice extends Equatable {
   Invoice({
-    this.id,
+    required this.id,
     this.totalPrice,
     this.totalPriceWithoutVAT,
     this.totalVATAmount,
@@ -22,7 +26,7 @@ class Invoice extends Equatable {
     this.sameTaxes = const <Tax>[],
   });
 
-  final int? id;
+  final Id id;
   final double? totalPrice;
   final double? totalPriceWithoutVAT;
   final double? totalVATAmount;

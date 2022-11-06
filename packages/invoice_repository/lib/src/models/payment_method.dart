@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:isar/isar.dart';
 
+part 'payment_method.g.dart';
+
+@Embedded(ignore: <String>{'props'})
 class PaymentMethod extends Equatable {
   const PaymentMethod({
     this.id,

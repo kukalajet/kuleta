@@ -1,15 +1,28 @@
 import 'package:dio/dio.dart';
+import 'package:invoice_repository/invoice_repository.dart';
+import 'package:isar/isar.dart';
 import 'package:invoice_repository/src/models/invoice.dart';
+import 'package:path_provider/path_provider.dart';
 
 const _baseUrl = 'https://efiskalizimi-app.tatime.gov.al';
 
 class InvoiceRepository {
   late Dio dio;
+  late Isar isar;
 
   InvoiceRepository() {
     final contentType = Headers.formUrlEncodedContentType;
     final options = BaseOptions(baseUrl: _baseUrl, contentType: contentType);
     dio = Dio(options);
+  }
+
+  Future<void> init() async {
+    final dir = await getApplicationSupportDirectory();
+    isar = await Isar.open(
+      [InvoiceSchema],
+      directory: dir.path,
+      inspector: true,
+    );
   }
 
   Future<Invoice?> getInvoiceFromService({
@@ -24,5 +37,11 @@ class InvoiceRepository {
     final invoice = Invoice.fromJson(data, iic, tin);
 
     return invoice;
+  }
+
+  Future<void> storeInvoice(Invoice invoice) async {
+    return isar.writeTxn(() async {
+      await isar.invoices.put(invoice);
+    });
   }
 }
