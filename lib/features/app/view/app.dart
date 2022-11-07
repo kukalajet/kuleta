@@ -7,12 +7,14 @@
 
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:kuleta/features/app/view/app_tabs_page.dart';
 import 'package:kuleta/features/app/view/nav_handler.dart';
+import 'package:kuleta/features/scanner/scanner.dart';
 import 'package:kuleta/l10n/l10n.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +26,13 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return View();
+    final scannerBloc = ScannerBloc(invoiceRepository: _invoiceRepository);
+
+    final providers = <BlocProvider>[
+      BlocProvider<ScannerBloc>(create: (context) => scannerBloc),
+    ];
+
+    return MultiBlocProvider(providers: providers, child: View());
   }
 }
 
@@ -45,7 +53,7 @@ class View extends StatelessWidget {
             path: 'scanner',
             pageBuilder: (context, state) => MaterialPage(
               key: state.pageKey,
-              child: const Center(child: Text('Scanner')),
+              child: const ScannerPage(),
             ),
           ),
           GoRoute(

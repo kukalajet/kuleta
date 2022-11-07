@@ -9,9 +9,12 @@ environment:
 
 dependencies:
   bloc: ^8.1.0
-  flex_color_scheme: ^6.0.1
   flutter:
     sdk: flutter
+  flex_color_scheme: ^6.0.1
+  # command used to install `mobile_scanner` on ios:
+  # https://github.com/CocoaPods/CocoaPods/issues/10287#issuecomment-902354887
+  mobile_scanner: ^2.0.0
   flutter_bloc: ^8.1.1
   flutter_localizations:
     sdk: flutter
@@ -21,6 +24,7 @@ dependencies:
   invoice_repository:
     path: packages/invoice_repository
   provider: ^6.0.4
+  equatable: ^2.0.5
 
 dev_dependencies:
   bloc_test: ^9.1.0
