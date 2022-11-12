@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="al.jeton.kuleta.kuleta">
+    package="al.jeton.kuleta">
    <application
         android:label="${appName}"
         android:icon="@mipmap/ic_launcher">

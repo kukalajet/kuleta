@@ -89,11 +89,11 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "al.jeton.kuleta.kuleta" "\0"
+            VALUE "CompanyName", "al.jeton.kuleta" "\0"
             VALUE "FileDescription", "kuleta" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "kuleta" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2022 al.jeton.kuleta.kuleta. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 al.jeton.kuleta. All rights reserved." "\0"
             VALUE "OriginalFilename", "kuleta.exe" "\0"
             VALUE "ProductName", "Kuleta" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

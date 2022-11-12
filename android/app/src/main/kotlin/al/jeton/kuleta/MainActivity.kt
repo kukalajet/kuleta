@@ -1,4 +1,4 @@
-package al.jeton.kuleta.kuleta
+package al.jeton.kuleta
 
 import io.flutter.embedding.android.FlutterActivity
 
