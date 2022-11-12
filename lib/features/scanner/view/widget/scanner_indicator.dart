@@ -37,7 +37,7 @@ class ScannerIndicator extends StatelessWidget {
 enum Position { topRight, topLeft, bottomRight, bottomLeft }
 
 class Corner extends StatefulWidget {
-  const Corner({Key? key, required this.position}) : super(key: key);
+  const Corner({super.key, required this.position});
 
   final Position position;
 

@@ -56,7 +56,8 @@ class _ScannerViewState extends State<ScannerView> {
       },
       builder: (context, state) {
         final isScanning = state.scannerStatus == ScannerStatus.initial;
-        final progressIndicatorColor = Theme.of(context).backgroundColor;
+        final progressIndicatorColor =
+            Theme.of(context).colorScheme.onBackground;
 
         // WIP: To avoid scanning manually. Should not be committed. @Jeton
         // final shouldSend = state.scannerStatus != ScannerStatus.success;
@@ -77,6 +78,7 @@ class _ScannerViewState extends State<ScannerView> {
                   var code = barcode.rawValue;
                   final format = barcode.format;
                   if (code != null && format == BarcodeFormat.qrCode) {
+                    // ignore: hack
                     // HACK: when parsing the value, `+` is parsed to `%2B`
                     if (code.contains('%2B') || code.contains('%20')) {
                       code = code.replaceAll('%2B', '+');

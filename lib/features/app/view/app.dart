@@ -63,8 +63,8 @@ class View extends StatelessWidget {
           GoRoute(
             path: 'detail',
             pageBuilder: (context, state) {
-              final isCreating = state.queryParams['iscreating'] == 'true';
-              final invoice = state.extra! as Invoice;
+              // final isCreating = state.queryParams['iscreating'] == 'true';
+              // final invoice = state.extra! as Invoice;
               return MaterialPage(
                 key: state.pageKey,
                 child: const Center(child: Text('Detail')),
