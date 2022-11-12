@@ -24,6 +24,46 @@ class InvoiceRepository {
     );
   }
 
+  Future<List<GroupedByDateInvoices>> getGroupedByDateInvoices({
+    int startIndex = 0,
+    int limit = 20,
+  }) async {
+    final sorted = await isar.invoices
+        .where()
+        .sortByDateTimeCreatedDesc()
+        .offset(startIndex)
+        .limit(limit)
+        .findAll();
+
+    final invoices = sorted.fold<List<GroupedByDateInvoices>>(
+      <GroupedByDateInvoices>[],
+      (previous, item) {
+        final dateTime = item.dateTimeCreated;
+        final index =
+            previous.indexWhere((item) => dateTime!.isSameDate(item.dateTime));
+
+        if (index == -1) {
+          final invoices = [item];
+          final data = GroupedByDateInvoices(
+            dateTime: dateTime!,
+            invoices: invoices,
+          );
+
+          previous.add(data);
+          return previous;
+        }
+
+        final current = previous[index];
+        current.invoices.add(item);
+        previous[index] = current;
+
+        return previous;
+      },
+    );
+
+    return invoices;
+  }
+
   Future<Invoice?> getInvoiceFromService({
     required String iic,
     required String dateTimeCreated,
@@ -45,4 +85,9 @@ class InvoiceRepository {
       await invoice.seller.save();
     });
   }
+}
+
+extension DateTimeX on DateTime {
+  bool isSameDate(DateTime other) =>
+      year == other.year && month == other.month && day == other.day;
 }

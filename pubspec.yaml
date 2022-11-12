@@ -25,6 +25,7 @@ dependencies:
     path: packages/invoice_repository
   provider: ^6.0.4
   equatable: ^2.0.5
+  group_list_view: ^1.1.1
 
 dev_dependencies:
   bloc_test: ^9.1.0

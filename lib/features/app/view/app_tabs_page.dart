@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kuleta/features/app/view/nav_handler.dart';
+import 'package:kuleta/features/invoice/view/invoice_page.dart';
 
 class AppTabsPage extends StatefulWidget {
   const AppTabsPage({super.key});
@@ -12,7 +13,7 @@ class AppTabsPage extends StatefulWidget {
 
 class _AppTabsPageState extends State<AppTabsPage> {
   Widget _getBody(int index) {
-    if (index == 0) return const Center(child: Text('Listing'));
+    if (index == 0) return const InvoicePage();
     if (index == 1) return const Center(child: Text('Overview'));
     if (index == 2) return const Center(child: Text('Settings'));
     return const Scaffold(

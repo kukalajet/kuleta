@@ -14,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:kuleta/features/app/view/app_tabs_page.dart';
 import 'package:kuleta/features/app/view/nav_handler.dart';
+import 'package:kuleta/features/invoice/bloc/invoice_bloc.dart';
 import 'package:kuleta/features/scanner/scanner.dart';
 import 'package:kuleta/l10n/l10n.dart';
 import 'package:provider/provider.dart';
@@ -26,9 +27,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final invoiceBloc = InvoiceBloc(invoiceRepository: _invoiceRepository)
+      ..add(InvoicesFetched());
     final scannerBloc = ScannerBloc(invoiceRepository: _invoiceRepository);
 
     final providers = <BlocProvider>[
+      BlocProvider<InvoiceBloc>(create: (context) => invoiceBloc),
       BlocProvider<ScannerBloc>(create: (context) => scannerBloc),
     ];
 
