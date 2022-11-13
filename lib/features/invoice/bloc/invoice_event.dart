@@ -26,3 +26,7 @@ class RemoveInvoiceFromState extends InvoiceEvent {
   @override
   List<Object> get props => [value];
 }
+
+class TotalAmountSpentLastMonthFetched extends InvoiceEvent {}
+
+class TotalAmountSpentLastWeekFetched extends InvoiceEvent {}

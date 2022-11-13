@@ -3,5 +3,9 @@
     "counterAppBarTitle": "Contador",
     "@counterAppBarTitle": {
         "description": "Texto mostrado en la AppBar de la página del contador"
+    },
+    "totalAmountSpentThisMonthTitle": "Gastos este mes",
+    "@totalAmountSpentThisMonthTitle": {
+        "description": "Texto que se muestra en la parte superior de la página de listado"
     }
 }

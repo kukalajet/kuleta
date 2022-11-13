@@ -30,7 +30,9 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final invoiceBloc = InvoiceBloc(invoiceRepository: _invoiceRepository)
-      ..add(InvoicesFetched());
+      ..add(InvoicesFetched())
+      ..add(TotalAmountSpentLastMonthFetched())
+      ..add(TotalAmountSpentLastWeekFetched());
     final scannerBloc = ScannerBloc(invoiceRepository: _invoiceRepository);
     final detailBloc = DetailBloc(invoiceRepository: _invoiceRepository);
 

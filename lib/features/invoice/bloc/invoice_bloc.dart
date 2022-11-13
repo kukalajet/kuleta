@@ -13,6 +13,8 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     on<InvoicesFetched>(_onInvoicesFetched);
     on<RemoveInvoiceFromState>(_onRemoveInvoiceFromState);
     on<AddInvoiceToState>(_onAddInvoiceToState);
+    on<TotalAmountSpentLastWeekFetched>(_onTotalAmountSpentLastWeekFetched);
+    on<TotalAmountSpentLastMonthFetched>(_onTotalAmountSpentLastMonthFetched);
   }
 
   final InvoiceRepository _invoiceRepository;
@@ -117,5 +119,70 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     invoices[index] = newGroupedByDateInvoices;
 
     emit(state.copyWith(invoices: invoices));
+  }
+
+  Future<void> _onTotalAmountSpentLastMonthFetched(
+    TotalAmountSpentLastMonthFetched event,
+    Emitter<InvoiceState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        totalAmountSpentLastMonthStatus:
+            TotalAmountSpentLastMonthStatus.initial,
+      ),
+    );
+
+    try {
+      final totalAmountSpentLastMonth =
+          await _invoiceRepository.getTotalAmountSpentLastMonth();
+
+      emit(
+        state.copyWith(
+          totalAmountSpentLastMonth: totalAmountSpentLastMonth,
+          totalAmountSpentLastMonthStatus:
+              TotalAmountSpentLastMonthStatus.success,
+        ),
+      );
+    } on Exception {
+      emit(
+        state.copyWith(
+          totalAmountSpentLastMonth: double.nan,
+          totalAmountSpentLastMonthStatus:
+              TotalAmountSpentLastMonthStatus.failure,
+        ),
+      );
+    }
+  }
+
+  Future<void> _onTotalAmountSpentLastWeekFetched(
+    TotalAmountSpentLastWeekFetched event,
+    Emitter<InvoiceState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        totalAmountSpentLastWeekStatus: TotalAmountSpentLastWeekStatus.initial,
+      ),
+    );
+
+    try {
+      final totalAmountSpentLastWeek =
+          await _invoiceRepository.getTotalAmountSpentLastWeek();
+
+      emit(
+        state.copyWith(
+          totalAmountSpentLastWeek: totalAmountSpentLastWeek,
+          totalAmountSpentLastWeekStatus:
+              TotalAmountSpentLastWeekStatus.success,
+        ),
+      );
+    } on Exception {
+      emit(
+        state.copyWith(
+          totalAmountSpentLastWeek: double.nan,
+          totalAmountSpentLastWeekStatus:
+              TotalAmountSpentLastWeekStatus.failure,
+        ),
+      );
+    }
   }
 }

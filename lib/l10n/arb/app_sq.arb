@@ -1,0 +1,11 @@
+{
+    "@@locale": "sq",
+    "counterAppBarTitle": "Numërues",
+    "@counterAppBarTitle": {
+        "description": "Teksti i shfaqur në shiritin e aplikacionit të faqes së numëruesit"
+    },
+    "totalAmountSpentThisMonthTitle": "Shuma e shpenzuar këtë muaj",
+    "@totalAmountSpentThisMonthTitle": {
+        "description": "Teksti i shfaqur në krye të faqes së listimit"
+    }
+}

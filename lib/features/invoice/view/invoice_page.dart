@@ -5,6 +5,7 @@ import 'package:group_list_view/group_list_view.dart';
 import 'package:intl/intl.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:kuleta/features/invoice/bloc/invoice_bloc.dart';
+import 'package:kuleta/l10n/l10n.dart';
 
 class InvoicePage extends StatelessWidget {
   const InvoicePage({super.key});
@@ -159,40 +160,44 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // final colorScheme = theme.colorScheme;
-    // final l10n = context.l10n;
-    // final totalExpenseLastMonth =
-    //     context.select((InvoiceBloc bloc) => bloc.state.expenseLastMonth);
+    final colorScheme = theme.colorScheme;
+    final l10n = context.l10n;
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: theme.primaryColor,
-          borderRadius: const BorderRadius.only(
-            bottomRight: Radius.circular(24),
+    return BlocSelector<InvoiceBloc, InvoiceState, double>(
+      selector: (state) => state.totalAmountSpentLastMonth,
+      builder: (context, totalAmountSpentLastMonth) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: theme.primaryColor,
+              borderRadius: const BorderRadius.only(
+                bottomRight: Radius.circular(24),
+              ),
+            ),
+            child: totalAmountSpentLastMonth == double.nan
+                ? CircularProgressIndicator(color: colorScheme.onPrimary)
+                : Padding(
+                    padding: const EdgeInsets.all(40),
+                    child: Column(
+                      children: [
+                        Text(
+                          '${l10n.totalAmountSpentThisMonthTitle}:',
+                          style: theme.textTheme.titleSmall
+                              ?.copyWith(color: colorScheme.onPrimary),
+                        ),
+                        Text(
+                          '${totalAmountSpentLastMonth.toStringAsFixed(2)} Lekë',
+                          style: theme.textTheme.displaySmall?.copyWith(
+                            color: colorScheme.onPrimary,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
           ),
-        ),
-        child: Container(),
-        // child: Padding(
-        //   padding: const EdgeInsets.all(40),
-        //   child: Column(
-        //     children: [
-        //       Text(
-        //         '${l10n.spentThisMonthTitle}:',
-        //         style: theme.textTheme.titleSmall
-        //             ?.copyWith(color: colorScheme.onPrimary),
-        //       ),
-        //       Text(
-        //         '${totalExpenseLastMonth.toStringAsFixed(2)} Lekë',
-        //         style: theme.textTheme.headline3?.copyWith(
-        //           color: colorScheme.onPrimary,
-        //         ),
-        //       )
-        //     ],
-        //   ),
-        // ),
-      ),
+        );
+      },
     );
   }
 }

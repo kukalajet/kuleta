@@ -100,6 +100,33 @@ class InvoiceRepository {
       return false;
     }
   }
+
+  Future<double> getTotalAmountSpentLastWeek() async {
+    return _getTotalAmountSpent(since: Duration(days: 7));
+  }
+
+  Future<double> getTotalAmountSpentLastMonth() async {
+    return _getTotalAmountSpent(since: Duration(days: 30));
+  }
+
+  Future<double> _getTotalAmountSpent({Duration? since}) async {
+    final invoices = await isar.invoices.filter().optional(
+      since != null,
+      (q) {
+        final now = DateTime.now();
+        final start = now.subtract(since ?? Duration.zero);
+        return q.dateTimeCreatedGreaterThan(start);
+      },
+    ).findAll();
+
+    final amountSpent = invoices.fold<double>(0.0, (previousTotalAmount, item) {
+      final totalPrice = item.totalPrice;
+      final value = previousTotalAmount + (totalPrice ?? 0.0);
+      return value;
+    });
+
+    return amountSpent;
+  }
 }
 
 extension DateTimeX on DateTime {
