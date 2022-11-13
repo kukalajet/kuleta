@@ -56,8 +56,7 @@ class _ScannerViewState extends State<ScannerView> {
       },
       builder: (context, state) {
         final isScanning = state.scannerStatus == ScannerStatus.initial;
-        final progressIndicatorColor =
-            Theme.of(context).colorScheme.onBackground;
+        final progressIndicatorColor = Theme.of(context).colorScheme.background;
 
         // WIP: To avoid scanning manually. Should not be committed. @Jeton
         // final shouldSend = state.scannerStatus != ScannerStatus.success;
