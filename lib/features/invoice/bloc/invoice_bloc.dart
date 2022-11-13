@@ -102,7 +102,10 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         dateTime: dateTime!,
         invoices: [invoice],
       );
-      invoices.add(newGroupedByDateInvoices);
+      invoices
+        ..add(newGroupedByDateInvoices)
+        ..sort((a, b) => a.dateTime.compareTo(b.dateTime));
+
       emit(state.copyWith(invoices: invoices));
       return;
     }
@@ -112,6 +115,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     final newGroupedByDateInvoices =
         invoices[index].copyWith(invoices: newInvoices);
     invoices[index] = newGroupedByDateInvoices;
+
     emit(state.copyWith(invoices: invoices));
   }
 }
