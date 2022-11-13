@@ -76,7 +76,10 @@ class DetailView extends StatelessWidget {
         toolbarHeight: kToolbarHeight + 1,
         backgroundColor: colorScheme.primary,
         centerTitle: true,
-        title: Text(_orderNumber),
+        title: Text(_orderNumber,
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: theme.colorScheme.onPrimary,
+            )),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: colorScheme.onPrimary),
           onPressed: () => Navigator.of(context).pop(),
