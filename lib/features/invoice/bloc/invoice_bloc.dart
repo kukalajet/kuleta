@@ -74,6 +74,12 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
 
     final groupedByDateInvoices = List<Invoice>.from(invoices[index].invoices)
       ..removeWhere((item) => item.id == id);
+    if (groupedByDateInvoices.isEmpty) {
+      invoices.removeAt(index);
+      emit(state.copyWith(invoices: invoices));
+      return;
+    }
+
     final newGroupedByDateInvoices =
         invoices[index].copyWith(invoices: groupedByDateInvoices);
     invoices[index] = newGroupedByDateInvoices;
