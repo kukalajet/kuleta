@@ -14,6 +14,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:kuleta/features/app/view/app_tabs_page.dart';
 import 'package:kuleta/features/app/view/nav_handler.dart';
+import 'package:kuleta/features/detail/bloc/bloc.dart';
+import 'package:kuleta/features/detail/view/view.dart';
 import 'package:kuleta/features/invoice/bloc/invoice_bloc.dart';
 import 'package:kuleta/features/scanner/scanner.dart';
 import 'package:kuleta/l10n/l10n.dart';
@@ -30,10 +32,12 @@ class App extends StatelessWidget {
     final invoiceBloc = InvoiceBloc(invoiceRepository: _invoiceRepository)
       ..add(InvoicesFetched());
     final scannerBloc = ScannerBloc(invoiceRepository: _invoiceRepository);
+    final detailBloc = DetailBloc(invoiceRepository: _invoiceRepository);
 
     final providers = <BlocProvider>[
       BlocProvider<InvoiceBloc>(create: (context) => invoiceBloc),
       BlocProvider<ScannerBloc>(create: (context) => scannerBloc),
+      BlocProvider<DetailBloc>(create: (context) => detailBloc),
     ];
 
     return MultiBlocProvider(providers: providers, child: View());
@@ -63,11 +67,14 @@ class View extends StatelessWidget {
           GoRoute(
             path: 'detail',
             pageBuilder: (context, state) {
-              // final isCreating = state.queryParams['iscreating'] == 'true';
-              // final invoice = state.extra! as Invoice;
+              final isBeingCreated = state.queryParams['iscreating'] == 'true';
+              final invoice = state.extra! as Invoice;
               return MaterialPage(
                 key: state.pageKey,
-                child: const Center(child: Text('Detail')),
+                child: DetailPage(
+                  invoice: invoice,
+                  isBeingCreated: isBeingCreated,
+                ),
               );
             },
           ),

@@ -78,12 +78,27 @@ class InvoiceRepository {
     return invoice;
   }
 
-  Future<void> storeInvoice(Invoice invoice) async {
-    return isar.writeTxn(() async {
-      await isar.invoices.put(invoice);
-      await isar.sellers.put(invoice.seller.value!);
-      await invoice.seller.save();
-    });
+  Future<bool> storeInvoice(Invoice invoice) async {
+    try {
+      await isar.writeTxn(() async {
+        await isar.invoices.put(invoice);
+        await isar.sellers.put(invoice.seller.value!);
+        await invoice.seller.save();
+      });
+
+      return true;
+    } on Exception {
+      return false;
+    }
+  }
+
+  Future<bool> removeStoredInvoice(int id) async {
+    try {
+      await isar.writeTxn(() => isar.invoices.delete(id));
+      return true;
+    } on Exception {
+      return false;
+    }
   }
 }
 
