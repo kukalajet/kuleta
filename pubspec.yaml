@@ -25,6 +25,11 @@ dependencies:
   invoice_repository:
     path: packages/invoice_repository
   mobile_scanner: ^2.0.0
+  modal_bottom_sheet: # https://github.com/jamesblasco/modal_bottom_sheet/issues/284#issuecomment-1304561628
+    git:
+      url: https://github.com/CoolDude53/modal_bottom_sheet.git
+      ref: d3779be7d661481cc0d99090d6356a286ae4f86b
+      path: modal_bottom_sheet
   provider: ^6.0.4
 
 dev_dependencies:

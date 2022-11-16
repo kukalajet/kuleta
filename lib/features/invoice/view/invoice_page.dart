@@ -5,19 +5,21 @@ import 'package:group_list_view/group_list_view.dart';
 import 'package:intl/intl.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:kuleta/features/invoice/bloc/invoice_bloc.dart';
+import 'package:kuleta/features/invoice/view/onboarding_page.dart';
 import 'package:kuleta/l10n/l10n.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class InvoicePage extends StatelessWidget {
   const InvoicePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const InvoicePageView();
+    return const _View();
   }
 }
 
-class InvoicePageView extends StatelessWidget {
-  const InvoicePageView({super.key});
+class _View extends StatelessWidget {
+  const _View();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +56,20 @@ class _InvoiceListState extends State<InvoiceList> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<InvoiceBloc, InvoiceState>(
+    return BlocConsumer<InvoiceBloc, InvoiceState>(
+      // TODO: Check if it first opening of the app.
+      listenWhen: (previous, current) =>
+          previous.invoicesStatus != current.invoicesStatus,
+      listener: (context, state) {
+        if (state.invoicesStatus == InvoicesStatus.success) {
+          showCupertinoModalBottomSheet<void>(
+            context: context,
+            expand: true,
+            enableDrag: false,
+            builder: (context) => const OnboardingPage(),
+          );
+        }
+      },
       buildWhen: (previous, current) {
         final previousInvoices = previous.invoices;
         final previousLength = previousInvoices.fold<int>(
