@@ -6,6 +6,8 @@ enum TotalAmountSpentLastWeekStatus { initial, loading, success, failure }
 
 enum TotalAmountSpentLastMonthStatus { initial, loading, success, failure }
 
+enum ShouldBeOnboardedStatus { initial, loading, success, failure }
+
 class InvoiceState extends Equatable {
   const InvoiceState({
     this.invoices = const <GroupedByDateInvoices>[],
@@ -17,6 +19,8 @@ class InvoiceState extends Equatable {
     this.totalAmountSpentLastMonth = double.nan,
     this.totalAmountSpentLastMonthStatus =
         TotalAmountSpentLastMonthStatus.initial,
+    this.shouldBeOnboarded = false,
+    this.shouldBeOnboardedStatus = ShouldBeOnboardedStatus.initial,
   });
 
   final List<GroupedByDateInvoices> invoices;
@@ -26,6 +30,8 @@ class InvoiceState extends Equatable {
   final TotalAmountSpentLastWeekStatus totalAmountSpentLastWeekStatus;
   final double totalAmountSpentLastMonth;
   final TotalAmountSpentLastMonthStatus totalAmountSpentLastMonthStatus;
+  final bool shouldBeOnboarded;
+  final ShouldBeOnboardedStatus shouldBeOnboardedStatus;
 
   InvoiceState copyWith({
     List<GroupedByDateInvoices>? invoices,
@@ -35,24 +41,24 @@ class InvoiceState extends Equatable {
     TotalAmountSpentLastWeekStatus? totalAmountSpentLastWeekStatus,
     double? totalAmountSpentLastMonth,
     TotalAmountSpentLastMonthStatus? totalAmountSpentLastMonthStatus,
+    bool? shouldBeOnboarded,
+    ShouldBeOnboardedStatus? shouldBeOnboardedStatus,
   }) {
-    final totalAmountSpentLastWeek1 =
-        totalAmountSpentLastWeek ?? this.totalAmountSpentLastWeek;
-    final totalAmountSpentLastWeekStatus1 =
-        totalAmountSpentLastWeekStatus ?? this.totalAmountSpentLastWeekStatus;
-    final totalAmountSpentLastMonth1 =
-        totalAmountSpentLastMonth ?? this.totalAmountSpentLastMonth;
-    final totalAmountSpentLastMonthStatus1 =
-        totalAmountSpentLastMonthStatus ?? this.totalAmountSpentLastMonthStatus;
-
     return InvoiceState(
       invoices: invoices ?? this.invoices,
       invoicesStatus: invoicesStatus ?? this.invoicesStatus,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-      totalAmountSpentLastWeek: totalAmountSpentLastWeek1,
-      totalAmountSpentLastWeekStatus: totalAmountSpentLastWeekStatus1,
-      totalAmountSpentLastMonth: totalAmountSpentLastMonth1,
-      totalAmountSpentLastMonthStatus: totalAmountSpentLastMonthStatus1,
+      totalAmountSpentLastWeek:
+          totalAmountSpentLastWeek ?? this.totalAmountSpentLastWeek,
+      totalAmountSpentLastWeekStatus:
+          totalAmountSpentLastWeekStatus ?? this.totalAmountSpentLastWeekStatus,
+      totalAmountSpentLastMonth:
+          totalAmountSpentLastMonth ?? this.totalAmountSpentLastMonth,
+      totalAmountSpentLastMonthStatus: totalAmountSpentLastMonthStatus ??
+          this.totalAmountSpentLastMonthStatus,
+      shouldBeOnboarded: shouldBeOnboarded ?? this.shouldBeOnboarded,
+      shouldBeOnboardedStatus:
+          shouldBeOnboardedStatus ?? this.shouldBeOnboardedStatus,
     );
   }
 
@@ -65,5 +71,7 @@ class InvoiceState extends Equatable {
         totalAmountSpentLastWeekStatus,
         totalAmountSpentLastMonth,
         totalAmountSpentLastMonthStatus,
+        shouldBeOnboarded,
+        shouldBeOnboardedStatus,
       ];
 }

@@ -1,23 +1,64 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:invoice_repository/invoice_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'invoice_event.dart';
 part 'invoice_state.dart';
 
+const _shouldBeOnboardedKey = 'should-be-onboarded';
+
 class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   InvoiceBloc({
     required InvoiceRepository invoiceRepository,
+    required SharedPreferences sharedPreferences,
   })  : _invoiceRepository = invoiceRepository,
+        _sharedPreferences = sharedPreferences,
         super(const InvoiceState()) {
     on<InvoicesFetched>(_onInvoicesFetched);
     on<RemoveInvoiceFromState>(_onRemoveInvoiceFromState);
     on<AddInvoiceToState>(_onAddInvoiceToState);
     on<TotalAmountSpentLastWeekFetched>(_onTotalAmountSpentLastWeekFetched);
     on<TotalAmountSpentLastMonthFetched>(_onTotalAmountSpentLastMonthFetched);
+    on<ShouldBeOnboardedFetched>(_onShouldShowOnboardingFetched);
   }
 
   final InvoiceRepository _invoiceRepository;
+  final SharedPreferences _sharedPreferences;
+
+  Future<void> _onShouldShowOnboardingFetched(
+    ShouldBeOnboardedFetched event,
+    Emitter<InvoiceState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        shouldBeOnboardedStatus: ShouldBeOnboardedStatus.loading,
+      ),
+    );
+
+    await Future<void>.delayed(const Duration(seconds: 2));
+
+    try {
+      final shouldBeOnboarded =
+          _sharedPreferences.getBool(_shouldBeOnboardedKey) ?? true;
+      if (shouldBeOnboarded) {
+        await _sharedPreferences.setBool(_shouldBeOnboardedKey, false);
+      }
+
+      emit(
+        state.copyWith(
+          shouldBeOnboarded: shouldBeOnboarded,
+          shouldBeOnboardedStatus: ShouldBeOnboardedStatus.success,
+        ),
+      );
+    } on Exception {
+      emit(
+        state.copyWith(
+          shouldBeOnboardedStatus: ShouldBeOnboardedStatus.failure,
+        ),
+      );
+    }
+  }
 
   Future<void> _onInvoicesFetched(
     InvoicesFetched event,

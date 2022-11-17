@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:kuleta/bootstrap.dart';
 import 'package:kuleta/features/app/app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,5 +17,12 @@ void main() async {
   final invoiceRepository = InvoiceRepository();
   await invoiceRepository.init();
 
-  await bootstrap(() => App(invoiceRepository: invoiceRepository));
+  final sharedPreferences = await SharedPreferences.getInstance();
+
+  await bootstrap(
+    () => App(
+      invoiceRepository: invoiceRepository,
+      sharedPreferences: sharedPreferences,
+    ),
+  );
 }

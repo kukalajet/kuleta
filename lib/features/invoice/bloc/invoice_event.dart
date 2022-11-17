@@ -30,3 +30,5 @@ class RemoveInvoiceFromState extends InvoiceEvent {
 class TotalAmountSpentLastMonthFetched extends InvoiceEvent {}
 
 class TotalAmountSpentLastWeekFetched extends InvoiceEvent {}
+
+class ShouldBeOnboardedFetched extends InvoiceEvent {}

@@ -8,13 +8,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:kuleta/features/app/app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   group('App', () {
     testWidgets('renders CounterPage', (tester) async {
       final invoiceRepository = InvoiceRepository();
       await invoiceRepository.init();
-      await tester.pumpWidget(App(invoiceRepository: invoiceRepository));
+      final sharedPreferences = await SharedPreferences.getInstance();
+      await tester.pumpWidget(App(
+        invoiceRepository: invoiceRepository,
+        sharedPreferences: sharedPreferences,
+      ));
     });
   });
 }

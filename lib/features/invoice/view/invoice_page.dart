@@ -57,11 +57,11 @@ class _InvoiceListState extends State<InvoiceList> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<InvoiceBloc, InvoiceState>(
-      // TODO: Check if it first opening of the app.
       listenWhen: (previous, current) =>
-          previous.invoicesStatus != current.invoicesStatus,
+          previous.shouldBeOnboarded != current.shouldBeOnboarded,
       listener: (context, state) {
-        if (state.invoicesStatus == InvoicesStatus.success) {
+        if (state.shouldBeOnboardedStatus == ShouldBeOnboardedStatus.success &&
+            state.shouldBeOnboarded) {
           showCupertinoModalBottomSheet<void>(
             context: context,
             expand: true,

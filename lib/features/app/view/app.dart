@@ -20,19 +20,29 @@ import 'package:kuleta/features/invoice/bloc/invoice_bloc.dart';
 import 'package:kuleta/features/scanner/scanner.dart';
 import 'package:kuleta/l10n/l10n.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class App extends StatelessWidget {
-  const App({super.key, required InvoiceRepository invoiceRepository})
-      : _invoiceRepository = invoiceRepository;
+  const App({
+    super.key,
+    required InvoiceRepository invoiceRepository,
+    required SharedPreferences sharedPreferences,
+  })  : _invoiceRepository = invoiceRepository,
+        _sharedPreferences = sharedPreferences;
 
   final InvoiceRepository _invoiceRepository;
+  final SharedPreferences _sharedPreferences;
 
   @override
   Widget build(BuildContext context) {
-    final invoiceBloc = InvoiceBloc(invoiceRepository: _invoiceRepository)
+    final invoiceBloc = InvoiceBloc(
+      invoiceRepository: _invoiceRepository,
+      sharedPreferences: _sharedPreferences,
+    )
       ..add(InvoicesFetched())
       ..add(TotalAmountSpentLastMonthFetched())
-      ..add(TotalAmountSpentLastWeekFetched());
+      ..add(TotalAmountSpentLastWeekFetched())
+      ..add(ShouldBeOnboardedFetched());
     final scannerBloc = ScannerBloc(invoiceRepository: _invoiceRepository);
     final detailBloc = DetailBloc(invoiceRepository: _invoiceRepository);
 
