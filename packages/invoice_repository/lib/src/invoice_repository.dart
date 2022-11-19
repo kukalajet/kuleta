@@ -59,7 +59,7 @@ class InvoiceRepository {
 
         return previous;
       },
-    );
+    )..sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
     return invoices;
   }

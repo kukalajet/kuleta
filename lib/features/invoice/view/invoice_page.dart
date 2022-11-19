@@ -7,6 +7,7 @@ import 'package:invoice_repository/invoice_repository.dart';
 import 'package:kuleta/features/invoice/bloc/invoice_bloc.dart';
 import 'package:kuleta/features/invoice/view/onboarding_page.dart';
 import 'package:kuleta/l10n/l10n.dart';
+import 'package:kuleta/ui/ui.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class InvoicePage extends StatelessWidget {
@@ -33,19 +34,19 @@ class _View extends StatelessWidget {
         toolbarHeight: 0,
       ),
       backgroundColor: colorScheme.surface,
-      body: const InvoiceList(),
+      body: const _InvoiceList(),
     );
   }
 }
 
-class InvoiceList extends StatefulWidget {
-  const InvoiceList({super.key});
+class _InvoiceList extends StatefulWidget {
+  const _InvoiceList();
 
   @override
-  State<InvoiceList> createState() => _InvoiceListState();
+  State<_InvoiceList> createState() => _InvoiceListState();
 }
 
-class _InvoiceListState extends State<InvoiceList> {
+class _InvoiceListState extends State<_InvoiceList> {
   final _scrollController = ScrollController();
 
   @override
@@ -115,16 +116,21 @@ class _InvoiceListState extends State<InvoiceList> {
             if (index.section == 0) return Container();
             // Renders bottom of list to allow FAB to not overlap listings
             if (index.section == invoices.length + 1) {
-              return const SizedBox(height: 72);
+              return BlocSelector<InvoiceBloc, InvoiceState, bool>(
+                selector: (state) => state.hasReachedMax,
+                builder: (context, hasReachedMax) => _BottomSection(
+                  hasReachedMax: hasReachedMax,
+                ),
+              );
             }
             final item = invoices[index.section - 1].invoices[index.index];
-            return Receipt(invoice: item);
+            return _Receipt(invoice: item);
           },
           groupHeaderBuilder: (BuildContext context, int section) {
             final theme = Theme.of(context);
             final colorScheme = theme.colorScheme;
 
-            if (section == 0) return const Header();
+            if (section == 0) return const _Header();
             // avoids rendering bottom of list header
             if (section == invoices.length + 1) return Container();
             final dateTime = invoices[section - 1].dateTime;
@@ -169,8 +175,8 @@ class _InvoiceListState extends State<InvoiceList> {
   }
 }
 
-class Header extends StatelessWidget {
-  const Header({super.key});
+class _Header extends StatelessWidget {
+  const _Header();
 
   @override
   Widget build(BuildContext context) {
@@ -217,8 +223,24 @@ class Header extends StatelessWidget {
   }
 }
 
-class Receipt extends StatelessWidget {
-  const Receipt({required this.invoice, super.key});
+class _BottomSection extends StatelessWidget {
+  const _BottomSection({required this.hasReachedMax});
+
+  final bool hasReachedMax;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        if (!hasReachedMax) const BottomLoader(),
+        const SizedBox(height: 72),
+      ],
+    );
+  }
+}
+
+class _Receipt extends StatelessWidget {
+  const _Receipt({required this.invoice});
 
   final Invoice invoice;
 

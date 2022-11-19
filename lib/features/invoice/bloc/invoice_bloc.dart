@@ -82,21 +82,31 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         final length = element.invoices.length;
         return total + length;
       });
-      final invoices = await _invoiceRepository.getGroupedByDateInvoices(
+
+      final newInvoices = await _invoiceRepository.getGroupedByDateInvoices(
         startIndex: currentLength,
       );
+      if (newInvoices.isEmpty) {
+        emit(
+          state.copyWith(
+            invoicesStatus: InvoicesStatus.success,
+            hasReachedMax: true,
+          ),
+        );
+        return;
+      }
+
+      if (newInvoices.first.dateTime.isSameDate(state.invoices.last.dateTime)) {
+        state.invoices.last.invoices.addAll(newInvoices.first.invoices);
+        newInvoices.removeAt(0);
+      }
 
       emit(
-        invoices.isEmpty
-            ? state.copyWith(
-                invoicesStatus: InvoicesStatus.success,
-                hasReachedMax: true,
-              )
-            : state.copyWith(
-                invoices: List.of(state.invoices)..addAll(invoices),
-                invoicesStatus: InvoicesStatus.success,
-                hasReachedMax: true,
-              ),
+        state.copyWith(
+          invoices: List.of(state.invoices)..addAll(newInvoices),
+          invoicesStatus: InvoicesStatus.success,
+          hasReachedMax: false,
+        ),
       );
     } on Exception {
       emit(state.copyWith(invoicesStatus: InvoicesStatus.failure));
