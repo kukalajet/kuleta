@@ -32,11 +32,11 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   void dispose() {
-    // final totalExpenseLastWeekFetchedEvent = TotalExpenseLastWeekFetched();
-    // final totalExpenseLastMonthFetched = TotalExpenseLastMonthFetched();
-    // _invoiceBloc
-    //   ..add(totalExpenseLastWeekFetchedEvent)
-    //   ..add(totalExpenseLastMonthFetched);
+    final totalAmountSpentLastMonthFetched = TotalAmountSpentLastMonthFetched();
+    final totalAmountSpentLastWeekFetched = TotalAmountSpentLastWeekFetched();
+    _invoiceBloc
+      ..add(totalAmountSpentLastMonthFetched)
+      ..add(totalAmountSpentLastWeekFetched);
 
     super.dispose();
   }
