@@ -76,16 +76,17 @@ class DetailView extends StatelessWidget {
         toolbarHeight: kToolbarHeight + 1,
         backgroundColor: colorScheme.primary,
         centerTitle: true,
-        title: Text(_orderNumber,
-            style: theme.textTheme.titleLarge?.copyWith(
-              color: theme.colorScheme.onPrimary,
-            )),
+        title: Text(
+          _orderNumber,
+          style: theme.textTheme.titleLarge?.copyWith(
+            color: theme.colorScheme.onPrimary,
+          ),
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: colorScheme.onPrimary),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Stack(
           children: [
@@ -391,7 +392,7 @@ class Article extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: colorScheme.onPrimary,
+          color: colorScheme.surface,
           borderRadius: const BorderRadius.all(Radius.circular(4)),
         ),
         child: Row(
@@ -441,6 +442,9 @@ class SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return BlocConsumer<DetailBloc, DetailState>(
       listener: (context, state) async {
         FocusScope.of(context).unfocus();
@@ -457,6 +461,7 @@ class SaveButton extends StatelessWidget {
       },
       builder: (context, state) => TonalButton(
         title: 'Ruaj faturën',
+        primary: colorScheme.secondary,
         onPressed: () {
           final addInvoiceEvent = AddInvoice(invoice);
           context.read<DetailBloc>().add(addInvoiceEvent);
@@ -476,6 +481,9 @@ class DeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return BlocConsumer<DetailBloc, DetailState>(
       listener: (context, state) async {
         FocusScope.of(context).unfocus();
@@ -492,8 +500,8 @@ class DeleteButton extends StatelessWidget {
       },
       builder: (context, state) => TonalButton(
         title: 'Fshij faturën',
-        onPrimary: Theme.of(context).colorScheme.onError,
-        primary: Theme.of(context).colorScheme.error,
+        onPrimary: colorScheme.error,
+        primary: colorScheme.error,
         onPressed: () {
           final deleteInvoiceEvent = DeleteInvoice(invoice);
           context.read<DetailBloc>().add(deleteInvoiceEvent);

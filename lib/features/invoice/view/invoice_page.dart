@@ -33,7 +33,6 @@ class _View extends StatelessWidget {
         elevation: 0,
         toolbarHeight: 0,
       ),
-      backgroundColor: colorScheme.surface,
       body: const _InvoiceList(),
     );
   }
@@ -268,7 +267,7 @@ class _Receipt extends StatelessWidget {
         child: Ink(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: colorScheme.onPrimary,
+            color: colorScheme.surface,
             borderRadius: const BorderRadius.all(Radius.circular(8)),
           ),
           child: Row(

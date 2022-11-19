@@ -102,48 +102,42 @@ class View extends StatelessWidget {
       child: MaterialApp.router(
         theme: FlexThemeData.light(
           scheme: FlexScheme.amber,
-          usedColors: 1,
+          usedColors: 2,
           surfaceMode: FlexSurfaceMode.highSurfaceLowScaffold,
-          blendLevel: 30,
+          blendLevel: 20,
           appBarOpacity: 0.95,
           swapColors: true,
           subThemesData: const FlexSubThemesData(
-            blendOnLevel: 30,
-            defaultRadius: 16,
-            dialogBackgroundSchemeColor: SchemeColor.onSecondaryContainer,
-            dialogRadius: 50,
-            timePickerDialogRadius: 50,
+            blendOnLevel: 20,
           ),
-          useMaterial3ErrorColors: true,
+          keyColors: const FlexKeyColors(
+            useSecondary: true,
+            keepSecondary: true,
+            keepSecondaryContainer: true,
+          ),
+          tones: FlexTones.highContrast(Brightness.light),
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           useMaterial3: true,
           fontFamily: GoogleFonts.arvo().fontFamily,
-          // To use the playground font, add GoogleFonts package and uncomment
-          // fontFamily: GoogleFonts.notoSans().fontFamily,
         ),
         darkTheme: FlexThemeData.dark(
           scheme: FlexScheme.amber,
-          usedColors: 1,
+          usedColors: 2,
           surfaceMode: FlexSurfaceMode.highScaffoldLowSurface,
           blendLevel: 15,
+          appBarStyle: FlexAppBarStyle.background,
           appBarOpacity: 0.90,
           subThemesData: const FlexSubThemesData(
             blendOnLevel: 30,
-            defaultRadius: 16,
-            dialogBackgroundSchemeColor: SchemeColor.onSecondaryContainer,
-            dialogRadius: 50,
-            timePickerDialogRadius: 50,
           ),
-          useMaterial3ErrorColors: true,
+          keyColors: const FlexKeyColors(
+            useSecondary: true,
+          ),
+          tones: FlexTones.highContrast(Brightness.dark),
           visualDensity: FlexColorScheme.comfortablePlatformDensity,
           useMaterial3: true,
           fontFamily: GoogleFonts.arvo().fontFamily,
-          // To use the playground font, add GoogleFonts package and uncomment
-          // fontFamily: GoogleFonts.notoSans().fontFamily,
         ),
-        // If you do not have a themeMode switch, uncomment this line
-        // to let the device system mode control the theme mode:
-        // themeMode: ThemeMode.system,
         themeMode: ThemeMode.light,
         localizationsDelegates: const [
           AppLocalizations.delegate,
