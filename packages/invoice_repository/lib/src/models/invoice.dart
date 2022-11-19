@@ -70,7 +70,9 @@ class Invoice extends Equatable {
     final dateTimeCreated = DateTime.tryParse(json['dateTimeCreated']);
 
     final invoice = Invoice(
-      id: json['id'],
+      // in some cases, invoice's `id` receives a `null` value
+      // to fix it we "convert" `tin` to an int until we don't find a better way
+      id: json['id'] ?? int.parse(tin.substring(1, tin.length - 1)),
       totalPrice: json['totalPrice']?.toDouble(),
       totalPriceWithoutVAT: json['totalPriceWithoutVAT']?.toDouble(),
       totalVATAmount: json['totalVATAmount']?.toDouble(),
