@@ -91,12 +91,13 @@ class DetailView extends StatelessWidget {
         child: Stack(
           children: [
             Items(invoice: invoice),
-            if (isBeingCreated ?? false)
+            // ignore: use_if_null_to_convert_nulls_to_bools
+            if (isBeingCreated == true)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: SaveButton(invoice: invoice),
               ),
-            if (isBeingCreated ?? true)
+            if (isBeingCreated == false)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: DeleteButton(invoice: invoice),
