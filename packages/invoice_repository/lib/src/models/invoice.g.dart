@@ -108,7 +108,7 @@ const InvoiceSchema = CollectionSchema(
   getId: _invoiceGetId,
   getLinks: _invoiceGetLinks,
   attach: _invoiceAttach,
-  version: '3.0.2',
+  version: '3.0.5',
 );
 
 int _invoiceEstimateSize(

@@ -69,7 +69,7 @@ const SellerSchema = CollectionSchema(
   getId: _sellerGetId,
   getLinks: _sellerGetLinks,
   attach: _sellerAttach,
-  version: '3.0.2',
+  version: '3.0.5',
 );
 
 int _sellerEstimateSize(
