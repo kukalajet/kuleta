@@ -24,9 +24,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class App extends StatelessWidget {
   const App({
-    super.key,
     required InvoiceRepository invoiceRepository,
     required SharedPreferences sharedPreferences,
+    super.key,
   })  : _invoiceRepository = invoiceRepository,
         _sharedPreferences = sharedPreferences;
 

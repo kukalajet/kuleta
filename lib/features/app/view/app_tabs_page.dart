@@ -13,9 +13,13 @@ class AppTabsPage extends StatefulWidget {
 
 class _AppTabsPageState extends State<AppTabsPage> {
   Widget _getBody(int index) {
-    if (index == 0) return const InvoicePage();
-    if (index == 1) return const Center(child: Text('Overview'));
-    if (index == 2) return const Center(child: Text('Settings'));
+    if (index == 0) {
+      return const InvoicePage();
+    } else if (index == 1) {
+      return const Center(child: Text('Overview'));
+    } else if (index == 2) {
+      return const Center(child: Text('Settings'));
+    }
     return const Scaffold(
       body: Center(child: Text('Listing')),
     );

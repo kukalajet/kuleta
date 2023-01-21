@@ -24,13 +24,15 @@ class _View extends StatelessWidget {
           _Item(
             title: 'Keep your invoice always with you',
             description:
-                'All your invoices in a single place where you can revisit them whenever you want',
+                'All your invoices in a single place where you can revisit '
+                'them whenever you want',
             icon: Icons.document_scanner,
           ),
           _Item(
             title: 'Manage your spendings',
             description:
-                'Ever felt spending too much? Having visibility of where your expenses are coming will help you save money',
+                'Ever felt spending too much? Having visibility of where your '
+                'expenses are coming will help you save money',
             icon: Icons.attach_money,
           ),
           _Item(
@@ -140,7 +142,7 @@ class _ContinueButton extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 32),
+      padding: const EdgeInsets.symmetric(vertical: 32),
       child: TonalButton(
         title: 'Continue',
         onPrimary: colorScheme.onError,

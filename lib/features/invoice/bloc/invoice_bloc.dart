@@ -4,6 +4,7 @@ import 'package:invoice_repository/invoice_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'invoice_event.dart';
+
 part 'invoice_state.dart';
 
 const _shouldBeOnboardedKey = 'should-be-onboarded';
@@ -64,7 +65,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     InvoicesFetched event,
     Emitter<InvoiceState> emit,
   ) async {
-    if (state.hasReachedMax) return;
+    if (state.hasReachedMax) {
+      return;
+    }
 
     try {
       if (state.invoicesStatus == InvoicesStatus.initial) {
@@ -123,7 +126,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     final invoices = List<GroupedByDateInvoices>.of(state.invoices);
     final index =
         invoices.indexWhere((item) => dateTime!.isSameDate(item.dateTime));
-    if (index == -1) return;
+    if (index == -1) {
+      return;
+    }
 
     final groupedByDateInvoices = List<Invoice>.from(invoices[index].invoices)
       ..removeWhere((item) => item.id == id);

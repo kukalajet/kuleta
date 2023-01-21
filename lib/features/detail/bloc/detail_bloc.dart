@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 
 part 'detail_event.dart';
+
 part 'detail_state.dart';
 
 class DetailBloc extends Bloc<DetailEvent, DetailState> {

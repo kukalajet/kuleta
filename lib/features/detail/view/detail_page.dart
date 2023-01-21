@@ -91,12 +91,12 @@ class DetailView extends StatelessWidget {
         child: Stack(
           children: [
             Items(invoice: invoice),
-            if (isBeingCreated == true)
+            if (isBeingCreated ?? false)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: SaveButton(invoice: invoice),
               ),
-            if (isBeingCreated == false)
+            if (isBeingCreated ?? true)
               Align(
                 alignment: Alignment.bottomCenter,
                 child: DeleteButton(invoice: invoice),
@@ -238,14 +238,20 @@ class InvoiceSignSection extends StatelessWidget {
 
   String? get _sign {
     var sign = invoiceOrderNumber.toString();
-    if (year != null) sign = '$sign / $year';
-    if (cashRegister != null) sign = '$sign / $cashRegister';
+    if (year != null) {
+      sign = '$sign / $year';
+    }
+    if (cashRegister != null) {
+      sign = '$sign / $cashRegister';
+    }
     return sign;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_sign == null) return const SizedBox();
+    if (_sign == null) {
+      return const SizedBox();
+    }
 
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -275,8 +281,12 @@ class SellerSection extends StatelessWidget {
     }
 
     var value = address ?? '';
-    if (town != null) value = '$value, $town';
-    if (country != null) value = '$value, $country';
+    if (town != null) {
+      value = '$value, $town';
+    }
+    if (country != null) {
+      value = '$value, $country';
+    }
 
     return value;
   }
@@ -315,7 +325,9 @@ class TimeSection extends StatelessWidget {
   final DateTime? date;
 
   String? get _formattedDate {
-    if (date == null) return null;
+    if (date == null) {
+      return null;
+    }
 
     final day = date?.day;
     final month = date?.month;
@@ -330,7 +342,9 @@ class TimeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_formattedDate == null) return const SizedBox();
+    if (_formattedDate == null) {
+      return const SizedBox();
+    }
 
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
@@ -362,8 +376,12 @@ class Items extends StatelessWidget {
       physics: const ClampingScrollPhysics(),
       itemCount: _items!.length + 2,
       itemBuilder: (context, index) {
-        if (index == 0) return Header(invoice: invoice);
-        if (index == _items!.length + 1) return const SizedBox(height: 72);
+        if (index == 0) {
+          return Header(invoice: invoice);
+        }
+        if (index == _items!.length + 1) {
+          return const SizedBox(height: 72);
+        }
         final item = _items![index - 1];
         return Article(item: item);
       },
@@ -450,11 +468,11 @@ class SaveButton extends StatelessWidget {
         FocusScope.of(context).unfocus();
         final status = state.additionStatus;
         if (status == AdditionStatus.loading) {
-          await Loader.startLoading(context);
+          await startLoading(context);
           return;
         }
         if (status == AdditionStatus.success) {
-          Loader.stopLoading(context);
+          stopLoading(context);
           context.pop();
           return;
         }
@@ -489,11 +507,11 @@ class DeleteButton extends StatelessWidget {
         FocusScope.of(context).unfocus();
         final status = state.removalStatus;
         if (status == RemovalStatus.loading) {
-          await Loader.startLoading(context);
+          await startLoading(context);
           return;
         }
         if (status == RemovalStatus.success) {
-          Loader.stopLoading(context);
+          stopLoading(context);
           context.pop();
           return;
         }

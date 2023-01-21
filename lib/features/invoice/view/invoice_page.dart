@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -62,11 +64,13 @@ class _InvoiceListState extends State<_InvoiceList> {
       listener: (context, state) {
         if (state.shouldBeOnboardedStatus == ShouldBeOnboardedStatus.success &&
             state.shouldBeOnboarded) {
-          showCupertinoModalBottomSheet<void>(
-            context: context,
-            expand: true,
-            enableDrag: false,
-            builder: (context) => const OnboardingPage(),
+          unawaited(
+            showCupertinoModalBottomSheet<void>(
+              context: context,
+              expand: true,
+              enableDrag: false,
+              builder: (context) => const OnboardingPage(),
+            ),
           );
         }
       },
@@ -106,13 +110,19 @@ class _InvoiceListState extends State<_InvoiceList> {
           physics: const ClampingScrollPhysics(),
           sectionsCount: invoices.length + 2,
           countOfItemInSection: (int section) {
-            if (section == 0) return 0;
+            if (section == 0) {
+              return 0;
+            }
             // Needed to render bottom of list
-            if (section == invoices.length + 1) return 1;
+            if (section == invoices.length + 1) {
+              return 1;
+            }
             return invoices[section - 1].invoices.length;
           },
           itemBuilder: (BuildContext context, IndexPath index) {
-            if (index.section == 0) return Container();
+            if (index.section == 0) {
+              return Container();
+            }
             // Renders bottom of list to allow FAB to not overlap listings
             if (index.section == invoices.length + 1) {
               return BlocSelector<InvoiceBloc, InvoiceState, bool>(
@@ -129,9 +139,13 @@ class _InvoiceListState extends State<_InvoiceList> {
             final theme = Theme.of(context);
             final colorScheme = theme.colorScheme;
 
-            if (section == 0) return const _Header();
+            if (section == 0) {
+              return const _Header();
+            }
             // avoids rendering bottom of list header
-            if (section == invoices.length + 1) return Container();
+            if (section == invoices.length + 1) {
+              return Container();
+            }
             final dateTime = invoices[section - 1].dateTime;
             final value = DateFormat('EEEE, d MMMM').format(dateTime);
 
@@ -167,7 +181,9 @@ class _InvoiceListState extends State<_InvoiceList> {
   }
 
   bool get _isBottom {
-    if (!_scrollController.hasClients) return false;
+    if (!_scrollController.hasClients) {
+      return false;
+    }
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
     return currentScroll >= (maxScroll * 0.9);
@@ -207,7 +223,8 @@ class _Header extends StatelessWidget {
                               ?.copyWith(color: colorScheme.onPrimary),
                         ),
                         Text(
-                          '${totalAmountSpentLastMonth.toStringAsFixed(2)} Lekë',
+                          '${totalAmountSpentLastMonth.toStringAsFixed(2)} '
+                          'Lekë',
                           style: theme.textTheme.displaySmall?.copyWith(
                             color: colorScheme.onPrimary,
                           ),
@@ -251,7 +268,9 @@ class _Receipt extends StatelessWidget {
 
   String? get _time {
     final time = invoice.dateTimeCreated;
-    if (time == null) return null;
+    if (time == null) {
+      return null;
+    }
     return '${time.hour}:${time.minute.toString().padLeft(2, '0')}';
   }
 

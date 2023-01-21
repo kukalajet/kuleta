@@ -16,10 +16,12 @@ void main() {
       final invoiceRepository = InvoiceRepository();
       await invoiceRepository.init();
       final sharedPreferences = await SharedPreferences.getInstance();
-      await tester.pumpWidget(App(
-        invoiceRepository: invoiceRepository,
-        sharedPreferences: sharedPreferences,
-      ));
+      await tester.pumpWidget(
+        App(
+          invoiceRepository: invoiceRepository,
+          sharedPreferences: sharedPreferences,
+        ),
+      );
     });
   });
 }

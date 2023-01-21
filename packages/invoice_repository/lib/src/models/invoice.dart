@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:invoice_repository/src/models/item.dart';
+import 'package:invoice_repository/src/models/payment_method.dart';
+import 'package:invoice_repository/src/models/seller.dart';
+import 'package:invoice_repository/src/models/tax.dart';
 import 'package:isar/isar.dart';
-
-import 'item.dart';
-import 'payment_method.dart';
-import 'seller.dart';
-import 'tax.dart';
 
 part 'invoice.g.dart';
 
@@ -48,20 +47,27 @@ class Invoice extends Equatable {
     final paymentMethodJson = json['paymentMethod'];
     final paymentMethod = paymentMethodJson != null
         ? List<PaymentMethod>.from(
-            paymentMethodJson.map((item) => PaymentMethod.fromJson(item)))
+            (paymentMethodJson as List<Map<String, dynamic>>).map(
+              (item) => PaymentMethod.fromJson(item),
+            ),
+          )
         : null;
 
     final itemsJson = json['items'];
     final items = itemsJson != null
         ? List<Item>.from(
-            itemsJson.map((item) => Item.fromJson(item)),
+            (itemsJson as List<Map<String, dynamic>>).map(
+              (item) => Item.fromJson(item),
+            ),
           )
         : null;
 
     final sameTaxesJson = json['sameTaxes'];
     final sameTaxes = sameTaxesJson != null
         ? List<Tax>.from(
-            sameTaxesJson.map((item) => Tax.fromJson(item)),
+            (sameTaxesJson as List<Map<String, dynamic>>).map(
+              (item) => Tax.fromJson(item),
+            ),
           )
         : null;
 
@@ -73,9 +79,9 @@ class Invoice extends Equatable {
       // in some cases, invoice's `id` receives a `null` value
       // to fix it we "convert" `tin` to an int until we don't find a better way
       id: json['id'] ?? int.parse(tin.substring(1, tin.length - 1)),
-      totalPrice: json['totalPrice']?.toDouble(),
-      totalPriceWithoutVAT: json['totalPriceWithoutVAT']?.toDouble(),
-      totalVATAmount: json['totalVATAmount']?.toDouble(),
+      totalPrice: (json['totalPrice'] as int?)?.toDouble(),
+      totalPriceWithoutVAT: (json['totalPriceWithoutVAT'] as int?)?.toDouble(),
+      totalVATAmount: (json['totalVATAmount'] as int?)?.toDouble(),
       cashRegister: json['cashRegister'],
       invoiceOrderNumber: json['invoiceOrderNumber'],
       dateTimeCreated: dateTimeCreated,

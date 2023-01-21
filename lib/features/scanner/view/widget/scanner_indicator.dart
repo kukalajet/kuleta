@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kuleta/features/scanner/scanner.dart';
 
 class ScannerIndicator extends StatelessWidget {
-  const ScannerIndicator({super.key, required this.visible});
+  const ScannerIndicator({
+    required this.visible,
+    super.key,
+  });
 
   final bool visible;
 
@@ -37,7 +40,10 @@ class ScannerIndicator extends StatelessWidget {
 enum Position { topRight, topLeft, bottomRight, bottomLeft }
 
 class Corner extends StatefulWidget {
-  const Corner({super.key, required this.position});
+  const Corner({
+    required this.position,
+    super.key,
+  });
 
   final Position position;
 
@@ -78,10 +84,18 @@ class _CornerState extends State<Corner> with SingleTickerProviderStateMixin {
   }
 
   double _getPositionValue() {
-    if (widget.position == Position.topLeft) return 1;
-    if (widget.position == Position.topRight) return 0.25;
-    if (widget.position == Position.bottomRight) return 0.5;
-    if (widget.position == Position.bottomLeft) return 0.75;
+    if (widget.position == Position.topLeft) {
+      return 1;
+    }
+    if (widget.position == Position.topRight) {
+      return 0.25;
+    }
+    if (widget.position == Position.bottomRight) {
+      return 0.5;
+    }
+    if (widget.position == Position.bottomLeft) {
+      return 0.75;
+    }
     return 60 / 60;
   }
 
