@@ -128,7 +128,7 @@ class _InvoiceListState extends State<_InvoiceList> {
               return BlocSelector<InvoiceBloc, InvoiceState, bool>(
                 selector: (state) => state.hasReachedMax,
                 builder: (context, hasReachedMax) => _BottomSection(
-                  hasReachedMax: hasReachedMax,
+                  hasReachedMax: invoices.isEmpty || hasReachedMax,
                 ),
               );
             }
