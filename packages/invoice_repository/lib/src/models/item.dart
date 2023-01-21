@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 
@@ -39,13 +41,13 @@ class Item extends Equatable {
       name: json['name'],
       code: json['code'],
       unit: json['unit'],
-      quantity: (json['quantity'] as int?)?.toDouble(),
-      unitPriceBeforeVat: (json['unitPriceBeforeVat'] as int?)?.toDouble(),
-      unitPriceAfterVat: (json['unitPriceAfterVat'] as int?)?.toDouble(),
-      priceBeforeVat: (json['priceBeforeVat'] as int?)?.toDouble(),
-      vatRate: (json['vatRate'] as int?)?.toDouble(),
-      vatAmount: (json['vatAmount'] as int?)?.toDouble(),
-      priceAfterVat: (json['priceAfterVat'] as int?)?.toDouble(),
+      quantity: json['quantity']?.toDouble(),
+      unitPriceBeforeVat: json['unitPriceBeforeVat']?.toDouble(),
+      unitPriceAfterVat: json['unitPriceAfterVat']?.toDouble(),
+      priceBeforeVat: json['priceBeforeVat']?.toDouble(),
+      vatRate: json['vatRate']?.toDouble(),
+      vatAmount: json['vatAmount']?.toDouble(),
+      priceAfterVat: json['priceAfterVat']?.toDouble(),
       investment: json['investment'],
     );
 

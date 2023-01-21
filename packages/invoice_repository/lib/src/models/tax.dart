@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:equatable/equatable.dart';
 import 'package:isar/isar.dart';
 
@@ -22,10 +24,10 @@ class Tax extends Equatable {
   factory Tax.fromJson(Map<String, dynamic> json) {
     final tax = Tax(
       id: json['id'],
-      numberOfItems: (json['numberOfItems'] as int?)?.toDouble(),
-      priceBeforeVat: (json['priceBeforeVat'] as int?)?.toDouble(),
-      vatRate: (json['vatRate'] as int?)?.toDouble(),
-      vatAmount: (json['vatAmount'] as int?)?.toDouble(),
+      numberOfItems: json['numberOfItems']?.toDouble(),
+      priceBeforeVat: json['priceBeforeVat']?.toDouble(),
+      vatRate: json['vatRate']?.toDouble(),
+      vatAmount: json['vatAmount']?.toDouble(),
     );
 
     return tax;

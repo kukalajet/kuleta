@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls
+
 import 'package:equatable/equatable.dart';
 import 'package:invoice_repository/src/models/item.dart';
 import 'package:invoice_repository/src/models/payment_method.dart';
@@ -47,7 +49,7 @@ class Invoice extends Equatable {
     final paymentMethodJson = json['paymentMethod'];
     final paymentMethod = paymentMethodJson != null
         ? List<PaymentMethod>.from(
-            (paymentMethodJson as List<Map<String, dynamic>>).map(
+            paymentMethodJson.map(
               (item) => PaymentMethod.fromJson(item),
             ),
           )
@@ -56,7 +58,7 @@ class Invoice extends Equatable {
     final itemsJson = json['items'];
     final items = itemsJson != null
         ? List<Item>.from(
-            (itemsJson as List<Map<String, dynamic>>).map(
+            itemsJson.map(
               (item) => Item.fromJson(item),
             ),
           )
@@ -65,7 +67,7 @@ class Invoice extends Equatable {
     final sameTaxesJson = json['sameTaxes'];
     final sameTaxes = sameTaxesJson != null
         ? List<Tax>.from(
-            (sameTaxesJson as List<Map<String, dynamic>>).map(
+            sameTaxesJson.map(
               (item) => Tax.fromJson(item),
             ),
           )
@@ -79,9 +81,9 @@ class Invoice extends Equatable {
       // in some cases, invoice's `id` receives a `null` value
       // to fix it we "convert" `tin` to an int until we don't find a better way
       id: json['id'] ?? int.parse(tin.substring(1, tin.length - 1)),
-      totalPrice: (json['totalPrice'] as int?)?.toDouble(),
-      totalPriceWithoutVAT: (json['totalPriceWithoutVAT'] as int?)?.toDouble(),
-      totalVATAmount: (json['totalVATAmount'] as int?)?.toDouble(),
+      totalPrice: json['totalPrice']?.toDouble(),
+      totalPriceWithoutVAT: json['totalPriceWithoutVAT']?.toDouble(),
+      totalVATAmount: json['totalVATAmount']?.toDouble(),
       cashRegister: json['cashRegister'],
       invoiceOrderNumber: json['invoiceOrderNumber'],
       dateTimeCreated: dateTimeCreated,
