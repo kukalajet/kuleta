@@ -34,20 +34,19 @@ class InvoiceRepository {
         .offset(startIndex)
         .limit(limit)
         .findAll();
-
+    num total = 0;
     final invoices = sorted.fold<List<GroupedByDateInvoices>>(
       <GroupedByDateInvoices>[],
       (previous, item) {
         final dateTime = item.dateTimeCreated;
+        total += item.totalPrice!;
         final index =
             previous.indexWhere((item) => dateTime!.isSameDate(item.dateTime));
 
         if (index == -1) {
           final invoices = [item];
           final data = GroupedByDateInvoices(
-            dateTime: dateTime!,
-            invoices: invoices,
-          );
+              dateTime: dateTime!, invoices: invoices, total: total);
 
           previous.add(data);
           return previous;
@@ -87,6 +86,18 @@ class InvoiceRepository {
       });
 
       return true;
+    } on Exception {
+      return false;
+    }
+  }
+
+  Future<bool> findById(int id) async {
+    try {
+      var invoicein = await isar.writeTxn(() => isar.invoices.get(id));
+      if (invoicein != null) {
+        return false;
+      } else
+        return true;
     } on Exception {
       return false;
     }
