@@ -22,7 +22,7 @@ import 'package:kuleta/l10n/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({
     required InvoiceRepository invoiceRepository,
     required SharedPreferences sharedPreferences,
@@ -34,25 +34,38 @@ class App extends StatelessWidget {
   final SharedPreferences _sharedPreferences;
 
   @override
-  Widget build(BuildContext context) {
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  late final List<BlocProvider> _providers;
+
+  @override
+  void initState() {
+    super.initState();
+
     final invoiceBloc = InvoiceBloc(
-      invoiceRepository: _invoiceRepository,
-      sharedPreferences: _sharedPreferences,
+      invoiceRepository: widget._invoiceRepository,
+      sharedPreferences: widget._sharedPreferences,
     )
       ..add(InvoicesFetched())
       ..add(TotalAmountSpentLastMonthFetched())
       ..add(TotalAmountSpentLastWeekFetched())
       ..add(ShouldBeOnboardedFetched());
-    final scannerBloc = ScannerBloc(invoiceRepository: _invoiceRepository);
-    final detailBloc = DetailBloc(invoiceRepository: _invoiceRepository);
+    final scannerBloc =
+        ScannerBloc(invoiceRepository: widget._invoiceRepository);
+    final detailBloc = DetailBloc(invoiceRepository: widget._invoiceRepository);
 
-    final providers = <BlocProvider>[
+    _providers = <BlocProvider>[
       BlocProvider<InvoiceBloc>(create: (context) => invoiceBloc),
       BlocProvider<ScannerBloc>(create: (context) => scannerBloc),
       BlocProvider<DetailBloc>(create: (context) => detailBloc),
     ];
+  }
 
-    return MultiBlocProvider(providers: providers, child: View());
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(providers: _providers, child: View());
   }
 }
 
