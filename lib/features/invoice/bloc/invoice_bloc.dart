@@ -32,9 +32,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     Emitter<InvoiceState> emit,
   ) async {
     emit(
-      state.copyWith(
-        shouldBeOnboardedStatus: ShouldBeOnboardedStatus.loading,
-      ),
+      state.copyWith(shouldBeOnboardedStatus: ShouldBeOnboardedStatus.loading),
     );
 
     await Future<void>.delayed(const Duration(seconds: 2));
@@ -78,6 +76,9 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
           hasReachedMax: false,
         );
         emit(newState);
+
+        // check again for invoices when not `initial` status
+        await _onInvoicesFetched(event, emit);
         return;
       }
 
@@ -90,12 +91,11 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         startIndex: currentLength,
       );
       if (newInvoices.isEmpty) {
-        emit(
-          state.copyWith(
-            invoicesStatus: InvoicesStatus.success,
-            hasReachedMax: true,
-          ),
+        final newState = state.copyWith(
+          invoicesStatus: InvoicesStatus.success,
+          hasReachedMax: true,
         );
+        emit(newState);
         return;
       }
 
@@ -104,15 +104,15 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
         newInvoices.removeAt(0);
       }
 
-      emit(
-        state.copyWith(
-          invoices: List.of(state.invoices)..addAll(newInvoices),
-          invoicesStatus: InvoicesStatus.success,
-          hasReachedMax: false,
-        ),
+      final newState = state.copyWith(
+        invoices: List.of(state.invoices)..addAll(newInvoices),
+        invoicesStatus: InvoicesStatus.success,
+        hasReachedMax: false,
       );
+      emit(newState);
     } on Exception {
-      emit(state.copyWith(invoicesStatus: InvoicesStatus.failure));
+      final newState = state.copyWith(invoicesStatus: InvoicesStatus.failure);
+      emit(newState);
     }
   }
 
