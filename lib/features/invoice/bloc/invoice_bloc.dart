@@ -151,7 +151,8 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
   ) {
     final invoice = event.value;
     final dateTime = invoice.dateTimeCreated;
-
+    var total = 0.0;
+    total += invoice.totalPrice!;
     final invoices = List<GroupedByDateInvoices>.of(state.invoices);
     final index =
         invoices.indexWhere((item) => dateTime!.isSameDate(item.dateTime));
@@ -159,6 +160,7 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       final newGroupedByDateInvoices = GroupedByDateInvoices(
         dateTime: dateTime!,
         invoices: [invoice],
+        total: total,
       );
       invoices
         ..add(newGroupedByDateInvoices)

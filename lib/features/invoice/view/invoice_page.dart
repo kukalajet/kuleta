@@ -147,15 +147,30 @@ class _InvoiceListState extends State<_InvoiceList> {
               return Container();
             }
             final dateTime = invoices[section - 1].dateTime;
+            final total = invoices[section - 1].total;
             final value = DateFormat('EEEE, d MMMM').format(dateTime);
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(
-                value,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: colorScheme.onBackground,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    value,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: colorScheme.onBackground,
+                    ),
+                  ),
+                  if (invoices[section - 1].invoices.length > 1)
+                    Text(
+                      'Totali : ${total.toStringAsFixed(0)}',
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: colorScheme.onBackground,
+                      ),
+                    )
+                  else
+                    Container(),
+                ],
               ),
             );
           },
