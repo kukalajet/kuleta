@@ -16,6 +16,11 @@ class ScannerState extends Equatable {
     this.scannerStatus = ScannerStatus.initial,
     this.scannedValueStatus = ScannedValueStatus.initial,
     this.insertionValueStatus = InsertionValueStatus.initial,
+    this.iic = const IIC.pure(),
+    this.tin = const TIN.pure(),
+    this.dateCreated = const DateCreated.pure(),
+    this.timeCreated = const TimeCreated.pure(null),
+    this.manualAdditionStatus = FormzStatus.pure,
   });
 
   final String scannedValue;
@@ -24,6 +29,11 @@ class ScannerState extends Equatable {
   final ScannerStatus scannerStatus;
   final ScannedValueStatus scannedValueStatus;
   final InsertionValueStatus insertionValueStatus;
+  final IIC iic;
+  final TIN tin;
+  final DateCreated dateCreated;
+  final TimeCreated timeCreated;
+  final FormzStatus manualAdditionStatus;
 
   ScannerState copyWith({
     ScannerStatus? scannerStatus,
@@ -32,6 +42,11 @@ class ScannerState extends Equatable {
     FetchingInvoiceStatus? fetchingInvoiceStatus,
     ScannedValueStatus? scannedValueStatus,
     InsertionValueStatus? insertionValueStatus,
+    IIC? iic,
+    TIN? tin,
+    DateCreated? dateCreated,
+    TimeCreated? timeCreated,
+    FormzStatus? manualAdditionStatus,
   }) {
     return ScannerState(
       scannerStatus: scannerStatus ?? this.scannerStatus,
@@ -41,6 +56,11 @@ class ScannerState extends Equatable {
           fetchingInvoiceStatus ?? this.fetchingInvoiceStatus,
       scannedValueStatus: scannedValueStatus ?? this.scannedValueStatus,
       insertionValueStatus: insertionValueStatus ?? this.insertionValueStatus,
+      iic: iic ?? this.iic,
+      tin: tin ?? this.tin,
+      dateCreated: dateCreated ?? this.dateCreated,
+      timeCreated: timeCreated ?? this.timeCreated,
+      manualAdditionStatus: manualAdditionStatus ?? this.manualAdditionStatus,
     );
   }
 
@@ -50,7 +70,7 @@ class ScannerState extends Equatable {
 
   @override
   String toString() {
-    return '''ScannerStatus { scannerStatus: $scannerStatus, scannedValue: $scannedValue, fetchedInvoice: $fetchedInvoice, fetchingInvoiceStatus: $fetchingInvoiceStatus, scannedValueStatus: $scannedValueStatus, insertionValueStatus: $insertionValueStatus }''';
+    return '''ScannerStatus { scannerStatus: $scannerStatus, scannedValue: $scannedValue, fetchedInvoice: $fetchedInvoice, fetchingInvoiceStatus: $fetchingInvoiceStatus, scannedValueStatus: $scannedValueStatus, insertionValueStatus: $insertionValueStatus, iic: $iic, tin: $tin, dateCreated: $dateCreated, timeCreated: $timeCreated, manualAdditionStatus: $manualAdditionStatus }''';
   }
 
   @override
@@ -61,5 +81,10 @@ class ScannerState extends Equatable {
         fetchingInvoiceStatus,
         scannedValueStatus,
         insertionValueStatus,
+        iic,
+        tin,
+        dateCreated,
+        timeCreated,
+        manualAdditionStatus,
       ];
 }

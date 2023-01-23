@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kuleta/features/scanner/scanner.dart';
+import 'package:kuleta/features/scanner/view/manual_addition_form.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class ScannerPage extends StatefulWidget {
   const ScannerPage({super.key});
@@ -87,6 +91,29 @@ class _ScannerViewState extends State<ScannerView> {
                     BlocProvider.of<ScannerBloc>(context).add(event);
                   }
                 },
+              ),
+              Positioned(
+                right: 16,
+                top: 24,
+                child: IconButton(
+                  onPressed: () {
+                    unawaited(
+                      showCupertinoModalBottomSheet(
+                        expand: false,
+                        context: context,
+                        isDismissible: false,
+                        enableDrag: false,
+                        builder: (context) => const Scaffold(
+                          body: Padding(
+                            padding: EdgeInsets.all(12),
+                            child: ManualAdditionForm(),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.edit),
+                ),
               ),
               Positioned(
                 right: 0,

@@ -1,8 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/src/material/time.dart';
+import 'package:formz/formz.dart';
 import 'package:invoice_repository/invoice_repository.dart';
+import 'package:kuleta/features/scanner/models/models.dart';
 
 part 'scanner_event.dart';
+
 part 'scanner_state.dart';
 
 class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
@@ -11,6 +15,10 @@ class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
         super(const ScannerState()) {
     on<ValueScanned>(_onValueScanned);
     on<ResetScannedValue>(_onResetScannedValue);
+    on<TINChanged>(_onTINChanged);
+    on<IICChanged>(_onIICChanged);
+    on<DateCreatedChanged>(_onDateCreatedChanged);
+    on<TimeCreatedChanged>(_onTimeCreatedChanged);
   }
 
   final InvoiceRepository _invoiceRepository;
@@ -59,6 +67,76 @@ class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
     Emitter<ScannerState> emit,
   ) async {
     emit(state.reset());
+  }
+
+  void _onTINChanged(TINChanged event, Emitter<ScannerState> emit) {
+    final tin = TIN.dirty(event.value);
+    emit(
+      state.copyWith(
+        tin: tin,
+        manualAdditionStatus: Formz.validate([
+          tin,
+          state.iic,
+          state.dateCreated,
+          state.timeCreated,
+        ]),
+      ),
+    );
+  }
+
+  void _onIICChanged(IICChanged event, Emitter<ScannerState> emit) {
+    final iic = IIC.dirty(event.value);
+    emit(
+      state.copyWith(
+        iic: iic,
+        manualAdditionStatus: Formz.validate([
+          state.tin,
+          iic,
+          state.dateCreated,
+          state.timeCreated,
+        ]),
+      ),
+    );
+  }
+
+  void _onDateCreatedChanged(
+    DateCreatedChanged event,
+    Emitter<ScannerState> emit,
+  ) {
+    final dateCreated = DateCreated.dirty(event.value);
+    emit(
+      state.copyWith(
+        dateCreated: dateCreated,
+        manualAdditionStatus: Formz.validate([
+          state.tin,
+          state.iic,
+          dateCreated,
+          state.timeCreated,
+        ]),
+      ),
+    );
+  }
+
+  void _onTimeCreatedChanged(
+    TimeCreatedChanged event,
+    Emitter<ScannerState> emit,
+  ) {
+    final timeCreated = TimeCreated.dirty(
+      event.value,
+      state.dateCreated.value,
+    );
+
+    emit(
+      state.copyWith(
+        timeCreated: timeCreated,
+        manualAdditionStatus: Formz.validate([
+          state.tin,
+          state.iic,
+          state.dateCreated,
+          timeCreated,
+        ]),
+      ),
+    );
   }
 
   Map<String, String> _getQueryParameters(String query) {
