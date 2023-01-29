@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/src/material/time.dart';
+import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
+import 'package:intl/intl.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:kuleta/features/scanner/models/models.dart';
 
@@ -19,6 +20,7 @@ class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
     on<IICChanged>(_onIICChanged);
     on<DateCreatedChanged>(_onDateCreatedChanged);
     on<TimeCreatedChanged>(_onTimeCreatedChanged);
+    on<ManuallyFetchInvoice>(_onFetchInvoice);
   }
 
   final InvoiceRepository _invoiceRepository;
@@ -137,6 +139,52 @@ class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
         ]),
       ),
     );
+  }
+
+  Future<void> _onFetchInvoice(
+    ManuallyFetchInvoice event,
+    Emitter<ScannerState> emit,
+  ) async {
+    if (state.manualAdditionStatus.isValidated) {
+      emit(
+        state.copyWith(manualAdditionStatus: FormzStatus.submissionInProgress),
+      );
+
+      final iic = state.iic.value;
+      final tin = state.tin.value;
+      final dateCreated = state.dateCreated.value;
+      final timeCreated = state.timeCreated.value;
+
+      final formatter = NumberFormat('00');
+
+      final year = dateCreated?.year;
+      final month = formatter.format(dateCreated?.month);
+      final day = formatter.format(dateCreated?.day);
+      final hour = timeCreated?.hour;
+      final minute = timeCreated?.minute;
+
+      final dateTimeCreated = '$year-$month-${day}T$hour:$minute:00+02.00';
+
+      try {
+        final invoice = await _invoiceRepository.getInvoiceFromService(
+          iic: iic,
+          dateTimeCreated: dateTimeCreated,
+          tin: tin,
+        );
+
+        emit(
+          state.copyWith(
+            manualAdditionStatus: FormzStatus.submissionSuccess,
+            fetchingInvoiceStatus: FetchingInvoiceStatus.success,
+            fetchedInvoice: invoice,
+          ),
+        );
+      } on Exception {
+        emit(
+          state.copyWith(manualAdditionStatus: FormzStatus.submissionFailure),
+        );
+      }
+    }
   }
 
   Map<String, String> _getQueryParameters(String query) {

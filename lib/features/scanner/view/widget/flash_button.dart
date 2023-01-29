@@ -23,15 +23,17 @@ class _FlashButtonState extends State<FlashButton> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return CircleAvatar(
-      radius: 36,
-      backgroundColor: colorScheme.primary,
+    return Ink(
+      decoration: ShapeDecoration(
+        shape: const CircleBorder(),
+        color: colorScheme.secondary,
+      ),
       child: IconButton(
+        iconSize: 32,
         icon: Icon(
           _isTorchActive ? Icons.flash_on : Icons.flash_off,
           color: colorScheme.onPrimary,
         ),
-        iconSize: 36,
         onPressed: _onPressed,
       ),
     );

@@ -53,3 +53,7 @@ class TimeCreatedChanged extends ScannerEvent {
   @override
   List<Object> get props => [value];
 }
+
+class ManuallyFetchInvoice extends ScannerEvent {
+  const ManuallyFetchInvoice();
+}

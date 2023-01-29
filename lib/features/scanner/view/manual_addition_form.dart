@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:kuleta/features/scanner/bloc/scanner_bloc.dart';
+import 'package:kuleta/ui/ui.dart';
 
 class ManualAdditionForm extends StatelessWidget {
   const ManualAdditionForm({super.key});
@@ -20,20 +21,19 @@ class ManualAdditionForm extends StatelessWidget {
             );
         }
       },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _TINInput(),
-            const Padding(padding: EdgeInsets.all(12)),
-            _IICInput(),
-            const Padding(padding: EdgeInsets.all(12)),
-            _DateCreatedInput(),
-            const Padding(padding: EdgeInsets.all(12)),
-            _TimeCreatedInput(),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _TINInput(),
+          const Padding(padding: EdgeInsets.all(12)),
+          _IICInput(),
+          const Padding(padding: EdgeInsets.all(12)),
+          _DateCreatedInput(),
+          const Padding(padding: EdgeInsets.all(12)),
+          _TimeCreatedInput(),
+          const Padding(padding: EdgeInsets.all(8)),
+          _SearchButton()
+        ],
       ),
     );
   }
@@ -140,7 +140,7 @@ class _DateCreatedInputState extends State<_DateCreatedInput> {
       helpText: 'Select a date',
     );
 
-    if (value != null) {
+    if (value != null && context.mounted) {
       context.read<ScannerBloc>().add(DateCreatedChanged(value));
     }
   }
@@ -169,6 +169,33 @@ class _DateCreatedInputState extends State<_DateCreatedInput> {
             errorText: state.tin.invalid ? 'date created' : null,
           ),
         );
+      },
+    );
+  }
+}
+
+class _SearchButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ScannerBloc, ScannerState>(
+      buildWhen: (previous, current) =>
+          previous.manualAdditionStatus != current.manualAdditionStatus,
+      builder: (context, state) {
+        final theme = Theme.of(context);
+        final colorScheme = theme.colorScheme;
+
+        return state.manualAdditionStatus.isSubmissionInProgress
+            ? const CircularProgressIndicator()
+            : TonalButton(
+                title: 'Kerko faturën',
+                onPrimary: colorScheme.error,
+                primary: colorScheme.error,
+                onPressed: state.manualAdditionStatus.isValidated
+                    ? () {
+                        context.read<ScannerBloc>().add(const ManuallyFetchInvoice());
+                      }
+                    : null,
+              );
       },
     );
   }

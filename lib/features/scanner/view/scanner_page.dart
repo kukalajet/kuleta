@@ -59,8 +59,10 @@ class _ScannerViewState extends State<ScannerView> {
         }
       },
       builder: (context, state) {
+        final theme = Theme.of(context);
+        final colorScheme = theme.colorScheme;
         final isScanning = state.scannerStatus == ScannerStatus.initial;
-        final progressIndicatorColor = Theme.of(context).colorScheme.background;
+        final progressIndicatorColor = colorScheme.background;
 
         // WIP: To avoid scanning manually. Should not be committed. @Jeton
         // final shouldSend = state.scannerStatus != ScannerStatus.success;
@@ -72,6 +74,39 @@ class _ScannerViewState extends State<ScannerView> {
         // }
 
         return Scaffold(
+          floatingActionButton: Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: FloatingActionButton.extended(
+              backgroundColor: colorScheme.primary,
+              label: Text(
+                'Shtim manual',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: colorScheme.onPrimary,
+                ),
+              ),
+              icon: Icon(Icons.add, color: colorScheme.onPrimary),
+              elevation: 0,
+              focusColor: theme.colorScheme.secondary,
+              autofocus: true,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(32),
+              ),
+              onPressed: () {
+                unawaited(
+                  showCupertinoModalBottomSheet(
+                    expand: false,
+                    context: context,
+                    builder: (context) => const Scaffold(
+                      body: Padding(
+                        padding: EdgeInsets.all(12),
+                        child: ManualAdditionForm(),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
           body: Stack(
             children: [
               MobileScanner(
@@ -93,32 +128,8 @@ class _ScannerViewState extends State<ScannerView> {
                 },
               ),
               Positioned(
+                top: 48,
                 right: 16,
-                top: 24,
-                child: IconButton(
-                  onPressed: () {
-                    unawaited(
-                      showCupertinoModalBottomSheet(
-                        expand: false,
-                        context: context,
-                        isDismissible: false,
-                        enableDrag: false,
-                        builder: (context) => const Scaffold(
-                          body: Padding(
-                            padding: EdgeInsets.all(12),
-                            child: ManualAdditionForm(),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.edit),
-                ),
-              ),
-              Positioned(
-                right: 0,
-                left: 0,
-                bottom: 56,
                 child: FlashButton(controller: _controller),
               ),
               if (isScanning) ...[
