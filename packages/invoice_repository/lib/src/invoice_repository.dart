@@ -95,9 +95,10 @@ class InvoiceRepository {
     try {
       var invoicein = await isar.writeTxn(() => isar.invoices.get(id));
       if (invoicein != null) {
-        return false;
-      } else
+        // 765060817 bloody
         return true;
+      } else
+        return false;
     } on Exception {
       return false;
     }

@@ -477,6 +477,12 @@ class SaveButton extends StatelessWidget {
           context.pop();
           return;
         }
+        if (status == AdditionStatus.failure) {
+          stopLoading(context);
+          await showError(context, 'Kjo faturë është tashmë në listë');
+          context.pop();
+          return;
+        }
       },
       builder: (context, state) => TonalButton(
         title: 'Ruaj faturën',
