@@ -177,11 +177,11 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
       emit(state.copyWith(invoices: invoices));
       return;
     }
-
+    total = invoices[index].total + invoice.totalPrice!;
     final newInvoices = List<Invoice>.from(invoices[index].invoices)
       ..add(invoice);
     final newGroupedByDateInvoices =
-        invoices[index].copyWith(invoices: newInvoices);
+        invoices[index].copyWith(invoices: newInvoices, total: total);
     invoices[index] = newGroupedByDateInvoices;
 
     emit(state.copyWith(invoices: invoices));

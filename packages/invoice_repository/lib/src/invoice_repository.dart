@@ -34,28 +34,27 @@ class InvoiceRepository {
         .offset(startIndex)
         .limit(limit)
         .findAll();
-    num total = 0;
+    var total = 0.0;
     final invoices = sorted.fold<List<GroupedByDateInvoices>>(
       <GroupedByDateInvoices>[],
       (previous, item) {
         final dateTime = item.dateTimeCreated;
-        total += item.totalPrice!;
         final index =
             previous.indexWhere((item) => dateTime!.isSameDate(item.dateTime));
 
         if (index == -1) {
           final invoices = [item];
           final data = GroupedByDateInvoices(
-              dateTime: dateTime!, invoices: invoices, total: total);
-
+              dateTime: dateTime!, invoices: invoices, total: item.totalPrice!);
           previous.add(data);
           return previous;
         }
+        total += previous[index].total + item.totalPrice!;
 
         final current = previous[index];
         current.invoices.add(item);
-        previous[index] = current;
-
+        previous[index] = current.copyWith(total: total);
+        total = 0;
         return previous;
       },
     )..sort((a, b) => b.dateTime.compareTo(a.dateTime));
