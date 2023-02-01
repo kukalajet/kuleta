@@ -9,8 +9,8 @@ int calculateDifferenceInHours(DateTime date) {
 }
 
 extension TimeOfDayX on TimeOfDay {
-  bool inTheFuture(DateTime selectedDay) {
-    final dayWithTime = selectedDay.copyWith(hour: hour, minute: minute);
-    return dayWithTime.inTheFuture();
-  }
+  // bool inTheFuture(DateTime selectedDay) {
+  //   final dayWithTime = selectedDay.copyWith(hour: hour, minute: minute);
+  //   return dayWithTime.inTheFuture();
+  // }
 }

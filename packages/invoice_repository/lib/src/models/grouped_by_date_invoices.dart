@@ -10,7 +10,7 @@ class GroupedByDateInvoices extends Equatable {
 
   final DateTime dateTime;
   final List<Invoice> invoices;
-  final num total;
+  final double total;
 
   GroupedByDateInvoices copyWith({
     DateTime? dateTime,
@@ -25,5 +25,5 @@ class GroupedByDateInvoices extends Equatable {
   }
 
   @override
-  List<Object> get props => [dateTime, invoices];
+  List<Object> get props => [dateTime, invoices, total];
 }
