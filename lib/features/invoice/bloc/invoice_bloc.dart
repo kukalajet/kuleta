@@ -145,11 +145,19 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     emit(state.copyWith(invoices: invoices));
   }
 
-  void _onAddInvoiceToState(
+  Future<void> _onAddInvoiceToState(
     AddInvoiceToState event,
     Emitter<InvoiceState> emit,
-  ) {
+  ) async {
     final invoice = event.value;
+    //check if invoice exists or not in db
+    final invoiceExists = await _invoiceRepository.findById(invoice.id);
+    if (invoiceExists) {
+      final invoices = List<GroupedByDateInvoices>.of(state.invoices);
+      emit(state.copyWith(invoices: invoices));
+      return;
+    }
+
     final dateTime = invoice.dateTimeCreated;
     var total = 0.0;
     total += invoice.totalPrice!;
