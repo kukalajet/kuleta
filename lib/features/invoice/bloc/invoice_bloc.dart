@@ -150,8 +150,11 @@ class InvoiceBloc extends Bloc<InvoiceEvent, InvoiceState> {
     Emitter<InvoiceState> emit,
   ) async {
     final invoice = event.value;
-    //check if invoice exists or not in db
-    final invoiceExists = await _invoiceRepository.findById(invoice.id);
+    final invoiceExists = await _invoiceRepository.findById(
+      invoice.id,
+      invoice.invoiceOrderNumber,
+    );
+
     if (invoiceExists) {
       final invoices = List<GroupedByDateInvoices>.of(state.invoices);
       emit(state.copyWith(invoices: invoices));
