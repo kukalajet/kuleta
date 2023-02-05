@@ -192,7 +192,9 @@ class _SearchButton extends StatelessWidget {
                 primary: colorScheme.error,
                 onPressed: state.manualAdditionStatus.isValidated
                     ? () {
-                        context.read<ScannerBloc>().add(const ManuallyFetchInvoice());
+                        context
+                            .read<ScannerBloc>()
+                            .add(const ManuallyFetchInvoice());
                       }
                     : null,
               );

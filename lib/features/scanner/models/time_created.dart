@@ -19,9 +19,9 @@ class TimeCreated extends FormzInput<TimeOfDay?, TimeCreatedValidationError> {
       return TimeCreatedValidationError.missingSelectedDate;
     }
 
-    // if (value.inTheFuture(selectedDate!)) {
-    //   return TimeCreatedValidationError.future;
-    // }
+    if (value.inTheFuture(selectedDate!)) {
+      return TimeCreatedValidationError.future;
+    }
 
     return null;
   }
