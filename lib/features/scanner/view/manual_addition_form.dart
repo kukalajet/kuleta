@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:kuleta/features/scanner/bloc/scanner_bloc.dart';
+import 'package:kuleta/l10n/l10n.dart';
 import 'package:kuleta/ui/ui.dart';
 
 class ManualAdditionForm extends StatelessWidget {
@@ -17,23 +18,31 @@ class ManualAdditionForm extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text("Couldn't retrieve an invoice")),
+              SnackBar(content: Text(context.l10n.invoiceSearchFailed)),
             );
         }
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _TINInput(),
-          const Padding(padding: EdgeInsets.all(12)),
-          _IICInput(),
-          const Padding(padding: EdgeInsets.all(12)),
-          _DateCreatedInput(),
-          const Padding(padding: EdgeInsets.all(12)),
-          _TimeCreatedInput(),
-          const Padding(padding: EdgeInsets.all(8)),
-          _SearchButton()
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(context.l10n.manualSearch),
+            ),
+            const SizedBox(height: 15),
+            _TINInput(),
+            const SizedBox(height: 15),
+            _IICInput(),
+            const SizedBox(height: 15),
+            _DateCreatedInput(),
+            const SizedBox(height: 15),
+            _TimeCreatedInput(),
+            const SizedBox(height: 15),
+            _SearchButton()
+          ],
+        ),
       ),
     );
   }
@@ -49,8 +58,8 @@ class _TINInput extends StatelessWidget {
           key: const Key('manualAdditionForm_tinInput_textField'),
           onChanged: (tin) => context.read<ScannerBloc>().add(TINChanged(tin)),
           decoration: InputDecoration(
-            labelText: 'tin',
-            errorText: state.tin.invalid ? 'invalid tin' : null,
+            labelText: 'NIPT',
+            errorText: state.tin.invalid ? 'invalid nipt' : null,
           ),
         );
       },
@@ -68,7 +77,7 @@ class _IICInput extends StatelessWidget {
           key: const Key('manualAdditionForm_iicInput_textField'),
           onChanged: (iic) => context.read<ScannerBloc>().add(IICChanged(iic)),
           decoration: InputDecoration(
-            labelText: 'iic',
+            labelText: 'NSLF / IIC',
             errorText: state.tin.invalid ? 'invalid iic' : null,
           ),
         );
@@ -114,7 +123,7 @@ class _TimeCreatedInputState extends State<_TimeCreatedInput> {
           controller: _controller,
           onTap: () => unawaited(chooseTime(context)),
           decoration: InputDecoration(
-            labelText: 'time created',
+            labelText: context.l10n.timeCreated,
             errorText: state.timeCreated.invalid ? 'time created' : null,
           ),
         );
@@ -134,13 +143,13 @@ class _DateCreatedInputState extends State<_DateCreatedInput> {
   Future<void> chooseDate(BuildContext context) async {
     final value = await showDatePicker(
       context: context,
-      initialDate: DateTime(2017, 4),
+      initialDate: DateTime.now(),
       firstDate: DateTime(2017, 3),
       lastDate: DateTime.now(),
-      helpText: 'Select a date',
+      helpText: context.l10n.selectDate,
     );
 
-    if (value != null && context.mounted) {
+    if (value != null) {
       context.read<ScannerBloc>().add(DateCreatedChanged(value));
     }
   }
@@ -165,7 +174,7 @@ class _DateCreatedInputState extends State<_DateCreatedInput> {
           controller: _controller,
           onTap: () => unawaited(chooseDate(context)),
           decoration: InputDecoration(
-            labelText: 'date created',
+            labelText: context.l10n.dateCreated,
             errorText: state.tin.invalid ? 'date created' : null,
           ),
         );
@@ -187,7 +196,7 @@ class _SearchButton extends StatelessWidget {
         return state.manualAdditionStatus.isSubmissionInProgress
             ? const CircularProgressIndicator()
             : TonalButton(
-                title: 'Kerko faturën',
+                title: context.l10n.searchInvoice,
                 onPrimary: colorScheme.error,
                 primary: colorScheme.error,
                 onPressed: state.manualAdditionStatus.isValidated

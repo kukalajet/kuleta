@@ -7,5 +7,74 @@
     "totalAmountSpentThisMonthTitle": "Shuma e shpenzuar këtë muaj",
     "@totalAmountSpentThisMonthTitle": {
         "description": "Teksti i shfaqur në krye të faqes së listimit"
-    }
+    },
+    "manualAddon": "Shtim manual",
+    "@manualAddon": {
+        "description": "Buton per shtim manual"
+    },
+    "addInvoice": "Shto faturë",
+    "@addInvoice": {
+        "description": "Buton per shtim fature"
+    },
+    "nonValidQr": "Ky QR code nuk eshte i vlefshem!",
+    "@nonValidQr": {
+        "description": "Tekst informues kur skanohet qr code"
+    },
+    "invoiceExists": "Kjo faturë është tashmë në listë!",
+    "@invoiceExists": {
+        "description": "Tekst informues kur shtohet një faturë"
+    },
+    "searchInvoice": "Kerko faturën",
+    "@searchInvoice": {
+        "description": "Buton per kerkim te faturës"
+    },
+    "deleteInvoice": "Fshij invfaturënoice",
+    "@deleteInvoice": {
+        "description": "Buton per te fshire faturën"
+    },
+    "saveInvoice": "Ruaj faturën",
+    "@saveInvoice": {
+        "description": "Buton per te ruajtur faturën"
+    },
+    "noTax": "Pa TVSH",
+    "@noTax": {
+        "description": "Tekst informues per TVSH"
+    },
+    "taxSum": "Shuma e TVSH-së",
+    "@taxSum": {
+        "description": "Tekst informues per shumen e TVSH"
+    },
+    "onboardingTitle1": "Mbajini faturat tuaja gjithmonë me vete",
+    "@onboardingTsitle1": {
+        "description": "Onboarding titulli rreshti i pare"
+    },
+    "onboardingSubtitle1": "Të gjitha faturat tuaja ne nje vënd te vetëm ku mund ti rishikoni sa herë ju nevojitet.",
+    "@onboardingSubtitle1": {
+        "description": "Onboarding subtitulli rreshti i pare"
+    },
+    "onboardingTitle2": "Menaxhoni shpenzimet tuaja",
+    "@onboardingTitle2": {
+        "description": "Onboarding titulli rreshti i dyte"
+    },
+    "onboardingSubtitle2": " Jeni ndjerë sikur keni shpenzuar tepr? Të paturit shikueshmëri ndaj shpenzimeve tuaja do tju ndihmoje te kurseni para",
+    "@onboardingSubtitle2": {
+        "description": "Onboarding subtitulli rreshti i dyte"
+    },
+    "onboardingTitle3":  "Nuk kërkohet Login",
+    "@onboardingTitle3": {
+        "description": "Onboarding titulli rreshti i trete"
+    },
+    "onboardingSubtitle3": "Kuleta nuk ēshtë e interesuar se kush jeni ju, përdorni atë në mënyrë anonime",
+    "@onboardingSubtitle3": {
+        "description": "Onboarding subtitulli rreshti i trete"
+    },
+    "total": "Totali",
+    "continiue": "Vazhddoni",
+    "welcome": "Mirësevini te",
+    "invoice": "Faturë!",
+    "dateCreated": "Data e krijimit",
+    "timeCreated": "Ora e krijimit",
+    "selectDate": "Zgjidhni daten",
+    "manualSearch": "Kerkim manual i fatures fiskale",
+    "invoiceSearchFailed": "Fatura nuk u gjet!"
 }

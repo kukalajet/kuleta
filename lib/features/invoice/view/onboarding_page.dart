@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuleta/l10n/l10n.dart';
 import 'package:kuleta/ui/ui.dart';
 
 class OnboardingPage extends StatelessWidget {
@@ -15,34 +16,30 @@ class _View extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = context.l10n;
 
     return Scaffold(
       backgroundColor: colorScheme.onPrimary,
       body: Column(
-        children: const <Widget>[
-          _Title(),
+        children: <Widget>[
+          const _Title(),
           _Item(
-            title: 'Keep your invoice always with you',
-            description:
-                'All your invoices in a single place where you can revisit '
-                'them whenever you want',
+            title: l10n.onboardingTitle1,
+            description: l10n.onboardingSubtitle1,
             icon: Icons.document_scanner,
           ),
           _Item(
-            title: 'Manage your spendings',
-            description:
-                'Ever felt spending too much? Having visibility of where your '
-                'expenses are coming will help you save money',
+            title: l10n.onboardingTitle2,
+            description: l10n.onboardingSubtitle2,
             icon: Icons.attach_money,
           ),
           _Item(
-            title: 'No login required',
-            description:
-                'Kuleta is not interested in who you are, use it anonymously',
+            title: l10n.onboardingTitle3,
+            description: l10n.onboardingSubtitle3,
             icon: Icons.supervised_user_circle,
           ),
-          Spacer(),
-          _ContinueButton(),
+          const Spacer(),
+          const _ContinueButton(),
         ],
       ),
     );
@@ -62,7 +59,7 @@ class _Title extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Welcome to',
+            context.l10n.welcome,
             style: theme.textTheme.headlineLarge?.copyWith(
               color: theme.colorScheme.primary,
             ),
@@ -144,7 +141,7 @@ class _ContinueButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 32),
       child: TonalButton(
-        title: 'Continue',
+        title: context.l10n.continiue,
         onPrimary: colorScheme.onError,
         primary: colorScheme.primary,
         onPressed: () => Navigator.of(context).pop(),

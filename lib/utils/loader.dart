@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuleta/features/app/app.dart';
 
 Future<void> startLoading(BuildContext context) async => showDialog<void>(
       context: context,
@@ -17,14 +18,20 @@ Future<void> startLoading(BuildContext context) async => showDialog<void>(
 
 void stopLoading(BuildContext context) => Navigator.of(context).pop();
 
-Future<void> showError(BuildContext context, String error) async =>
-    ScaffoldMessenger.of(context).showSnackBar(
+void showError(String error) =>
+    rootScaffoldMessengerKey.currentState!.showSnackBar(
       SnackBar(
-        action: SnackBarAction(
-          label: 'Dismiss',
-          onPressed: () => ScaffoldMessenger.of(context).hideCurrentSnackBar(),
-        ),
+        dismissDirection: DismissDirection.horizontal,
         backgroundColor: Colors.red,
-        content: Text(error),
+        content: Row(
+          children: [
+            const Icon(
+              Icons.error,
+              color: Colors.white,
+            ),
+            const SizedBox(width: 20),
+            Text(error),
+          ],
+        ),
       ),
     );

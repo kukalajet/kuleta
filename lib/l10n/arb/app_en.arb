@@ -7,5 +7,74 @@
     "totalAmountSpentThisMonthTitle": "Amount spent this month",
     "@totalAmountSpentThisMonthTitle": {
         "description": "Text shown at the top of Listing Page"
-    }
+    },
+    "manualAddon": "Add manually",
+    "@manualAddon": {
+        "description": "Button for manual addon"
+    },
+    "addInvoice": "Add invoice",
+    "@addInvoice": {
+        "description": "Button adding a invoice"
+    },
+    "nonValidQr": "This QR code is not valid!",
+    "@nonValidQr": {
+        "description": "Informative text on QR code validity"
+    },
+    "invoiceExists": "This invoice is already listed!",
+    "@invoiceExists": {
+        "description": "Informative text when adding an invoice"
+    },
+    "searchInvoice": "Search invoice",
+    "@searchInvoice": {
+        "description": "Button for searching invoice"
+    },
+    "deleteInvoice": "Delete invoice",
+    "@deleteInvoice": {
+        "description": "Button for deleting invoice"
+    },
+    "saveInvoice": "Save invoice",
+    "@saveInvoice": {
+        "description": "Button saving an invoice"
+    },
+    "noTax": "Without tax",
+    "@noTax": {
+        "description": "Informative text on tax"
+    },
+    "taxSum": "Tax sum",
+    "@taxSum": {
+        "description": "Informative text on tax sum"
+    },
+    "onboardingTitle1": "Keep your invoice always with you",
+    "@onboardingTitle1": {
+        "description": "Onboarding title first row"
+    },
+    "onboardingSubtitle1": "All your invoices in a single place where you can revisit them whenever you want",
+    "@onboardingSubtitle1": {
+        "description": "Onboarding subtitle first row"
+    },
+    "onboardingTitle2": "Manage your spendings",
+    "@onboardingTitle2": {
+        "description": "Onboarding title first row"
+    },
+    "onboardingSubtitle2": " Ever felt spending too much? Having visibility of where your expenses are coming will help you save money",
+    "@onboardingSubtitle2": {
+        "description": "Onboarding subtitle first row"
+    },
+    "onboardingTitle3": "Manage your spendings",
+    "@onboardingTitle3": {
+        "description": "Onboarding title first row"
+    },
+    "onboardingSubtitle3": "No login required",
+    "@onboardingSubtitle3": {
+        "description": "Kuleta is not interested in who you are, use it anonymously"
+    },
+    "total": "Total",
+    "continiue": "Continiue",
+    "welcome": "Welcome to",
+    "invoice": "Invoice",
+    "dateCreated": "Date created",
+    "timeCreated": "Time created",
+    "selectDate": "Select a date",
+    "manualSearch": "Manual search of Invoice",
+    "invoiceSearchFailed": "Couldn't retrieve an invoice"
 }

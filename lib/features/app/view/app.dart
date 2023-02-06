@@ -22,6 +22,9 @@ import 'package:kuleta/l10n/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
 class App extends StatefulWidget {
   const App({
     required InvoiceRepository invoiceRepository,
@@ -113,6 +116,7 @@ class View extends StatelessWidget {
     return ChangeNotifierProvider<NavHandler>(
       create: (_) => NavHandler(_router),
       child: MaterialApp.router(
+        scaffoldMessengerKey: rootScaffoldMessengerKey,
         theme: FlexThemeData.light(
           scheme: FlexScheme.amber,
           usedColors: 2,
