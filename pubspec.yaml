@@ -17,7 +17,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   go_router: ^5.1.5
-  google_fonts: ^3.0.1
+  google_fonts: ^4.0.3
   group_list_view: ^1.1.1
   # command used to install `mobile_scanner` on ios:
   # https://github.com/CocoaPods/CocoaPods/issues/10287#issuecomment-902354887
