@@ -90,11 +90,18 @@ class InvoiceRepository {
     }
   }
 
-  Future<bool> findById(int id) async {
+  Future<bool> findById(int id, int? orderNumber) async {
     try {
-      var invoicein = await isar.writeTxn(() => isar.invoices.get(id));
+      //sometimes invoice ID is the same with other invoice
+      //so we check order number instead
+      var invoicein = await isar.invoices
+          .where()
+          .idEqualTo(id)
+          .filter()
+          .invoiceOrderNumberEqualTo(orderNumber)
+          .findFirst();
+
       if (invoicein != null) {
-        // 765060817 bloody
         return true;
       } else
         return false;

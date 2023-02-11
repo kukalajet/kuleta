@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kuleta/features/scanner/scanner.dart';
 import 'package:kuleta/features/scanner/view/manual_addition_form.dart';
+import 'package:kuleta/l10n/l10n.dart';
+import 'package:kuleta/utils/loader.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -79,7 +81,7 @@ class _ScannerViewState extends State<ScannerView> {
             child: FloatingActionButton.extended(
               backgroundColor: colorScheme.primary,
               label: Text(
-                'Shtim manual',
+                context.l10n.manualAddon,
                 style: theme.textTheme.titleLarge?.copyWith(
                   color: colorScheme.onPrimary,
                 ),
@@ -111,9 +113,15 @@ class _ScannerViewState extends State<ScannerView> {
             children: [
               MobileScanner(
                 controller: _controller,
-                allowDuplicates: isScanning,
-                onDetect: (barcode, arguments) {
+                onDetect: (barcode, arguments) async {
                   var code = barcode.rawValue;
+                  if (!code!
+                      .toLowerCase()
+                      .contains('efiskalizimi-app.tatime.gov.al')) {
+                    showError(context.l10n.nonValidQr);
+                    return;
+                  }
+
                   final format = barcode.format;
                   if (code != null && format == BarcodeFormat.qrCode) {
                     // ignore: hack

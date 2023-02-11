@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:kuleta/features/detail/bloc/bloc.dart';
 import 'package:kuleta/features/invoice/bloc/bloc.dart';
+import 'package:kuleta/l10n/l10n.dart';
 import 'package:kuleta/ui/ui.dart';
 import 'package:kuleta/utils/utils.dart';
 
@@ -61,10 +62,6 @@ class DetailView extends StatelessWidget {
   final Invoice invoice;
   final bool? isBeingCreated;
 
-  String get _orderNumber {
-    return 'Faturë ${invoice.invoiceOrderNumber!}';
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -73,11 +70,10 @@ class DetailView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         // `toolbarHeight` because of: https://stackoverflow.com/a/70815978
-        toolbarHeight: kToolbarHeight + 1,
         backgroundColor: colorScheme.primary,
         centerTitle: true,
         title: Text(
-          _orderNumber,
+          '${context.l10n.invoice} ${invoice.invoiceOrderNumber!}',
           style: theme.textTheme.titleLarge?.copyWith(
             color: theme.colorScheme.onPrimary,
           ),
@@ -189,9 +185,9 @@ class PriceSection extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     final withoutVatValue =
-        'Pa TVSH: ${totalPriceWithoutVAT?.toStringAsFixed(2)} Lekë';
+        '''${context.l10n.noTax}: ${totalPriceWithoutVAT?.toStringAsFixed(2)} Lekë''';
     final vatValue =
-        'Shuma e TVSH-së: ${totalVATAmount?.toStringAsFixed(2)} Lekë';
+        '${context.l10n.taxSum}: ${totalVATAmount?.toStringAsFixed(2)} Lekë';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -479,13 +475,13 @@ class SaveButton extends StatelessWidget {
         }
         if (status == AdditionStatus.failure) {
           stopLoading(context);
-          await showError(context, 'Kjo faturë është tashmë në listë');
+          showError(context.l10n.invoiceExists);
           context.pop();
           return;
         }
       },
       builder: (context, state) => TonalButton(
-        title: 'Ruaj faturën',
+        title: context.l10n.saveInvoice,
         primary: colorScheme.secondary,
         onPressed: () {
           final addInvoiceEvent = AddInvoice(invoice);
@@ -524,7 +520,7 @@ class DeleteButton extends StatelessWidget {
         }
       },
       builder: (context, state) => TonalButton(
-        title: 'Fshij faturën',
+        title: context.l10n.deleteInvoice,
         onPrimary: colorScheme.error,
         primary: colorScheme.error,
         onPressed: () {

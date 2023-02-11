@@ -7,6 +7,7 @@ class TonalButton extends StatelessWidget {
     this.onPrimary,
     this.primary,
     this.minimumSize,
+    this.padding = const EdgeInsets.all(16),
     super.key,
   });
 
@@ -15,6 +16,7 @@ class TonalButton extends StatelessWidget {
   final Color? onPrimary;
   final Color? primary;
   final Size? minimumSize;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class TonalButton extends StatelessWidget {
     ).copyWith(elevation: ButtonStyleButton.allOrNull(0));
 
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: padding,
       child: ElevatedButton(
         onPressed: onPressed,
         style: buttonStyle,

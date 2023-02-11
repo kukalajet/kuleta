@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kuleta/features/app/view/nav_handler.dart';
 import 'package:kuleta/features/invoice/view/invoice_page.dart';
+import 'package:kuleta/l10n/l10n.dart';
 
 class AppTabsPage extends StatefulWidget {
   const AppTabsPage({super.key});
@@ -42,7 +43,7 @@ class _AppTabsPageState extends State<AppTabsPage> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: colorScheme.primary,
         label: Text(
-          'Shto faturë',
+          context.l10n.addInvoice,
           style: theme.textTheme.titleLarge?.copyWith(
             color: colorScheme.onPrimary,
           ),

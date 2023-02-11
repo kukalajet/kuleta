@@ -30,7 +30,10 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
     );
 
     try {
-      final invoiceExists = await _invoiceRepository.findById(invoice.id);
+      final invoiceExists = await _invoiceRepository.findById(
+        invoice.id,
+        invoice.invoiceOrderNumber,
+      );
       if (invoiceExists) {
         emit(state.copyWith(additionStatus: AdditionStatus.failure));
         return;

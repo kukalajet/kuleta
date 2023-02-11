@@ -160,10 +160,10 @@ class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
       final year = dateCreated?.year;
       final month = formatter.format(dateCreated?.month);
       final day = formatter.format(dateCreated?.day);
-      final hour = timeCreated?.hour;
+      final hour = formatter.format(timeCreated?.hour);
       final minute = timeCreated?.minute;
 
-      final dateTimeCreated = '$year-$month-${day}T$hour:$minute:00+02.00';
+      final dateTimeCreated = '$year-$month-${day}T$hour:$minute:00+01:00';
 
       try {
         final invoice = await _invoiceRepository.getInvoiceFromService(
@@ -171,7 +171,6 @@ class ScannerBloc extends Bloc<ScannerEvent, ScannerState> {
           dateTimeCreated: dateTimeCreated,
           tin: tin,
         );
-
         emit(
           state.copyWith(
             manualAdditionStatus: FormzStatus.submissionSuccess,

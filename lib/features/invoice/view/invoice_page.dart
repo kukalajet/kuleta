@@ -163,7 +163,7 @@ class _InvoiceListState extends State<_InvoiceList> {
                   ),
                   if (invoices[section - 1].invoices.length > 1)
                     Text(
-                      'Totali : ${total.toStringAsFixed(0)}',
+                      '${context.l10n.total} : ${total.toStringAsFixed(0)}',
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: colorScheme.onBackground,
                       ),
