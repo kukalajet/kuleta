@@ -12,6 +12,9 @@ class ManualAdditionForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return BlocListener<ScannerBloc, ScannerState>(
       listener: (context, state) {
         if (state.manualAdditionStatus.isSubmissionFailure) {
@@ -27,19 +30,27 @@ class ManualAdditionForm extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text(context.l10n.manualSearch),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                child: Text(
+                  context.l10n.manualSearch,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: colorScheme.onSurface,
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 16),
             _TINInput(),
-            const SizedBox(height: 15),
+            const SizedBox(height: 16),
             _IICInput(),
-            const SizedBox(height: 15),
+            const SizedBox(height: 16),
             _DateCreatedInput(),
-            const SizedBox(height: 15),
+            const SizedBox(height: 16),
             _TimeCreatedInput(),
-            const SizedBox(height: 15),
+            const SizedBox(height: 16),
             _SearchButton()
           ],
         ),
@@ -199,6 +210,8 @@ class _SearchButton extends StatelessWidget {
                 title: context.l10n.searchInvoice,
                 onPrimary: colorScheme.error,
                 primary: colorScheme.error,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
                 onPressed: state.manualAdditionStatus.isValidated
                     ? () {
                         context
