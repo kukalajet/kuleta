@@ -75,6 +75,6 @@
     "dateCreated": "Date created",
     "timeCreated": "Time created",
     "selectDate": "Select a date",
-    "manualSearch": "Manual search of Invoice",
+    "manualSearch": "Manual search of invoice",
     "invoiceSearchFailed": "Couldn't retrieve an invoice"
 }
