@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:invoice_repository/invoice_repository.dart';
 import 'package:isar/isar.dart';
@@ -13,6 +16,12 @@ class InvoiceRepository {
     final contentType = Headers.formUrlEncodedContentType;
     final options = BaseOptions(baseUrl: _baseUrl, contentType: contentType);
     dio = Dio(options);
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
   }
 
   Future<void> init() async {
@@ -68,8 +77,14 @@ class InvoiceRepository {
     required String tin,
   }) async {
     final body = {'iic': iic, 'dateTimeCreated': dateTimeCreated, 'tin': tin};
-    final response =
-        await dio.post('/invoice-check/api/verifyInvoice', data: body);
+    Response<dynamic> response;
+    try {
+      response = await dio.post('/invoice-check/api/verifyInvoice', data: body);
+    } catch (error) {
+      print(error);
+    }
+
+    response = await dio.post('/invoice-check/api/verifyInvoice', data: body);
     final data = response.data as Map<String, dynamic>;
     final invoice = Invoice.fromJson(data, iic, tin);
 
