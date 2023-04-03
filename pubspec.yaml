@@ -31,7 +31,7 @@ dependencies:
       ref: d3779be7d661481cc0d99090d6356a286ae4f86b
       path: modal_bottom_sheet
   provider: ^6.0.4
-  shared_preferences: ^2.0.15
+  shared_preferences: ^2.1.0
 
 dev_dependencies:
   bloc_test: ^9.1.0
