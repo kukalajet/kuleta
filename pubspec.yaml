@@ -16,7 +16,7 @@ dependencies:
   flutter_bloc: ^8.1.1
   flutter_localizations:
     sdk: flutter
-  go_router: ^5.1.5
+  go_router: ^6.5.8
   google_fonts: ^3.0.1
   group_list_view: ^1.1.1
   # command used to install `mobile_scanner` on ios:
